@@ -1,26 +1,16 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
-
+import Routers from "./router/index"
+import GlobalStore from "./store/globalStateProvider";
+import 'sweetalert2/src/sweetalert2.scss'
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    return (
+        <React.Fragment>
+            <GlobalStore>
+            <Routers/>
+            </GlobalStore>
+        </React.Fragment>
+    );
 }
 
 export default App;
