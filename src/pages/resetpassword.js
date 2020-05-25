@@ -1,7 +1,8 @@
-import React from "react";
-import PasswordResetForm from "../components/passwordresetform";
+import React from 'react';
+import PasswordResetForm from "../components/resetpasswordform";
 
-export default function forgotPassword() {
+
+export default function ResetPassword() {
     return (
         <React.Fragment>
             <PasswordResetForm/>

@@ -7,7 +7,7 @@ const AppRoute = ({component: Component, layout: Layout, ...rest}) => {
 
 
     return (
-        <Route {...rest} render={props => {
+        <Route {...rest} exact render={props => {
             return (
 
                 <Layout>{rest.routeProtection === false ? <Component header={rest.header}

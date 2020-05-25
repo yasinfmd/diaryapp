@@ -7,7 +7,8 @@ import Dashboard from "../pages/dashboard";
 import AppRoute from "./approutelayout";
 import Register from "../pages/register";
 import AuthStore from "../store/authStateProvider"
-import ForgotPassword from "../pages/resetpassword"
+import ForgotPassword from "../pages/forgotpassword"
+import ResetPassword from "../pages/resetpassword"
 
 export default function Routers() {
 
@@ -15,9 +16,17 @@ export default function Routers() {
         <Router>
             <AppRoute path="/" exact layout={MainLayout} component={Dashboard} routeProtection={true}></AppRoute>
             <AuthStore>
-                <AppRoute path="/forgotpassword" header={"Parolamı Unuttum"}
+                <AppRoute path="/resetpassword/:token" header={"Yeni Parola Oluştur"}
                           footerurl={"/login"}
-                          footertext={"Geri Dön Giriş Yap"}
+
+                          footertext={""}
+                          footer={""} layout={LoginLayout}
+                          component={ResetPassword}
+                          routeProtection={false}></AppRoute>
+
+                <AppRoute path="/forgotpassword" header={"Parola Sıfırlama"}
+                          footerurl={"/login"}
+                          footertext={"Geri Dön"}
                           footer={"Giriş Yap"} layout={LoginLayout}
                           component={ForgotPassword}
                           routeProtection={false}></AppRoute>
@@ -33,6 +42,7 @@ export default function Routers() {
                           footer={"Giriş Yap"} layout={LoginLayout} component={Register}
                           routeProtection={false}></AppRoute>
             </AuthStore>
+         {/*   <Redirect from='*' to='/login' />*/}
         </Router>
     )
 }

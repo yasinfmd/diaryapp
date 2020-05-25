@@ -7,7 +7,7 @@ import {msgBox} from "../utils/appmsgbox"
 import AuthContext from "../context/authContext";
 import {useHistory} from "react-router-dom";
 
-const PasswordResetForm = props => {
+const ForgotPasswordForm = props => {
     const [email, bindemail, resetemail, emailValidate] = useInput('', emailValidator)
     const {forgotpassword} = useContext(AuthContext)
 
@@ -57,5 +57,5 @@ const PasswordResetForm = props => {
         </React.Fragment>
     )
 }
-export default PasswordResetForm
+export default ForgotPasswordForm
 

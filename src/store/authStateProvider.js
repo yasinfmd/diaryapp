@@ -25,7 +25,6 @@ const AuthStore = ({children}) => {
     }
 
     const login = async (data) => {
-        debugger
         return new Promise(((resolve, reject) => {
             axios.post("http://127.0.0.1:3000/api/auth/signin", data).then((res) => {
                 if (res.status === 200) {
@@ -36,6 +35,26 @@ const AuthStore = ({children}) => {
                 resolve(res)
             }).catch((err) => {
                 reject(err)
+            })
+        }))
+    }
+    const passwordtokencheck = (token) => {
+        return new Promise(((resolve, reject) => {
+            axios.get("http://127.0.0.1:3000/api/auth/checktoken/" + token).then((response) => {
+                resolve(response)
+            }).catch((error) => {
+                reject(error)
+            })
+        }))
+
+    }
+
+    const updatepass = (data) => {
+        return new Promise(((resolve, reject) => {
+            axios.post("http://127.0.0.1:3000/api/auth/updatepassword", data).then((response) => {
+                resolve(response)
+            }).catch((error) => {
+                reject(error)
             })
         }))
     }
@@ -53,16 +72,16 @@ const AuthStore = ({children}) => {
                 reject(err)
             })
         }))
-
     }
-
     return (
         <AuthContext.Provider value={{
             state: authState,
             dispatch: authDispatch,
             register: register,
             login: login,
-            forgotpassword: forgotpassword
+            forgotpassword: forgotpassword,
+            passwordtokencheck: passwordtokencheck,
+            updatepass:updatepass
         }}>
             {children}
         </AuthContext.Provider>

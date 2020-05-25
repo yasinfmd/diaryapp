@@ -8,27 +8,15 @@ const useHttp = (url, options, method, data) => {
     React.useEffect(() => {
         const fetchData = async () => {
             setIsLoading(true);
+            debugger
             try {
-                let res;
                 switch (method) {
-                    case "POST":
-                        res = await axios.post(url, data, options)
-                        return
                     case "GET":
-                        res = await axios.get(url, options)
-                        console.log("get")
-                        console.log(res)
-                        return
-                    case "PUT":
-                        res = await axios.put(url, data, options)
-                        return
-                    case "DELETE":
-                        res = await axios.delete(url, options)
+                        const res = await axios.get(url, options)
+                        setResponse(res);
+                        setIsLoading(false)
                         return
                 }
-                console.log("setres",res)
-                setIsLoading(false)
-                setResponse(res);
             } catch (error) {
                 setIsLoading(false)
                 setError(error);
@@ -36,7 +24,6 @@ const useHttp = (url, options, method, data) => {
         };
         fetchData();
     }, []);
-    console.log("returnedilen",response)
     return {response, error, isLoading};
 };
 export default useHttp

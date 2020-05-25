@@ -1,5 +1,4 @@
-import React, {useContext, useState} from 'react';
-import GlobalContext from "../context/globalContext";
+import React from 'react';
 import LoginForm from "../components/loginForm";
 
 export default function Login() {
