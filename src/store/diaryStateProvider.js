@@ -11,8 +11,25 @@ const DiaryStore = ({children}) => {
     }
     const [diaryState, diaryDispatch] = useReducer(diaryReducers, initialState)
 
+    const fetch = (data) => {
+        let deferred = new Promise(((resolve, reject) => {
+            debugger
+            diaryDispatch({type: "SET", loading: true})
+            axios.post("http://127.0.0.1:3000/api/dair/", data).then((res) => {
+                debugger
+                if (res.status === 200) {
+                    diaryDispatch({type: "SET", loading: false, payload: res.data})
+                }
+                resolve(res)
+            }).catch((err) => {
+                diaryDispatch({type: "SET", loading: false})
+                reject(err)
+            })
+        }))
+        return deferred
+    }
+
     const create = (data) => {
-        debugger
         let deferred = new Promise(((resolve, reject) => {
             debugger
             axios.post("http://127.0.0.1:3000/api/dair/create", data).then((res) => {
@@ -24,6 +41,7 @@ const DiaryStore = ({children}) => {
                 }
                 resolve(res)
             }).catch((err) => {
+                diaryDispatch({type: "CREATE", loading: false})
                 reject(err)
             })
         }))
@@ -34,7 +52,8 @@ const DiaryStore = ({children}) => {
         <DiaryContext.Provider value={{
             state: diaryState,
             dispatch: diaryDispatch,
-            creatediary: create
+            creatediary: create,
+            fetchdiary: fetch
         }}>
             {children}
         </DiaryContext.Provider>

@@ -1,7 +1,10 @@
 export default function diaryReducers(state, action) {
     switch (action.type) {
         case "SET":
-            return {}
+            return {
+                loading: action.loading,
+                diary: action.payload
+            }
         case "CREATE":
             return {
                 loading: action.loading,
