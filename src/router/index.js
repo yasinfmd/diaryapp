@@ -6,15 +6,25 @@ import Login from "../pages/login";
 import Dashboard from "../pages/dashboard";
 import AppRoute from "./approutelayout";
 import Register from "../pages/register";
-import AuthStore from "../store/authStateProvider"
 import ForgotPassword from "../pages/forgotpassword"
 import ResetPassword from "../pages/resetpassword"
+import CreateDiar from "../pages/creatediar"
+
+
+import AuthStore from "../store/authStateProvider"
+import DiaryStore from "../store/diaryStateProvider";
 
 export default function Routers() {
 
     return (
         <Router>
-            <AppRoute path="/" exact layout={MainLayout} component={Dashboard} routeProtection={true}></AppRoute>
+            <DiaryStore>
+                <AppRoute path="/" exact layout={MainLayout} component={Dashboard} routeProtection={true}></AppRoute>
+                <AppRoute path="/create-diar" exact
+                          layout={MainLayout}
+                          component={CreateDiar}
+                          routeProtection={true}></AppRoute>
+            </DiaryStore>
             <AuthStore>
                 <AppRoute path="/resetpassword/:token" header={"Yeni Parola Oluştur"}
                           footerurl={"/login"}
@@ -42,7 +52,7 @@ export default function Routers() {
                           footer={"Giriş Yap"} layout={LoginLayout} component={Register}
                           routeProtection={false}></AppRoute>
             </AuthStore>
-         {/*   <Redirect from='*' to='/login' />*/}
+            {/*   <Redirect from='*' to='/login' />*/}
         </Router>
     )
 }

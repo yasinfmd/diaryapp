@@ -12,6 +12,16 @@ export const nameValidator = (name) => {
     return true
 }
 
+export const diarTitleValidator = (title) => {
+    if (title.trim().length < 1) return false
+    return true
+}
+
+export const diarContentValidator = (content) => {
+    if (content.trim().length < 1) return false
+    return true
+}
+
 export const surnameValidator = (surname) => {
     if (surname.trim().length < 2) return false
     return true

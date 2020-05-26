@@ -8,12 +8,15 @@
     "@testing-library/user-event": "^7.1.2",
     "alertifyjs": "^1.13.1",
     "axios": "^0.19.2",
+    "dompurify": "^2.0.11",
+    "nib-core": "^2.7.6",
     "node-sass": "^4.14.1",
     "prop-types": "^15.7.2",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.1",
+    "react-simplemde-editor": "^4.1.1",
     "sweetalert2": "^9.13.1"
   },
   "scripts": {

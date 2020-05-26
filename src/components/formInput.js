@@ -6,7 +6,9 @@ const InputForm = props => {
     return (
         <div className={"form-group" + " " + props.forminputclass}>
             {props.toplabel === true ? <label>{props.toplabeltext}</label> : null}
-            <input type={props.type} className={"form-control" + " " + props.forminputclass}
+            <input type={props.type}
+                   autoFocus={props.autoFocus}
+                   className={"form-control" + " " + props.forminputclass}
                    placeholder={props.placeholder} value={props.value} onChange={props.onChange}/>
             {/*"invalid-feedback"*/}
             {props.sublabel === true ? <div className={props.sublabelclass}>

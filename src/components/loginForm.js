@@ -6,16 +6,23 @@ import useInput from "../customHooks/useInput";
 import {msgBox} from "../utils/appmsgbox"
 import AuthContext from "../context/authContext";
 import {useHistory} from "react-router-dom";
+import GlobalContext from "../context/globalContext";
 
 const LoginForm = props => {
     const [email, bindemail, resetemail, emailValidate] = useInput('', emailValidator)
     const [password, bindpassword, resetpassword, passwordValidate] = useInput('', passwordValidator)
     const {login} = useContext(AuthContext)
+    const {updateUser, updateAuth} = useContext(GlobalContext)
     let history = useHistory();
     const onLogin = () => {
         login({email, password}).then((response) => {
             if (response.status === 200) {
+                localStorage.setItem("token", JSON.stringify(response.data))
+                updateAuth(true)
+                updateUser(response.data)
+                console.log("cevap", response)
                 history.push('/')
+                //dispatch token storageset token
             } else if (response.status === 204) {
                 msgBox("warning", "Kullanıcı Adı Veya Parola Hatalı")
             }

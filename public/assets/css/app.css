@@ -19172,6 +19172,10 @@ body[data-leftbar-theme=dark] .side-nav .side-nav-third-level li.active>a {
     animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
     border-color: red transparent transparent transparent;
 }
+.css-1pt0gkv{
+    min-height: 400px !important;
+    resize: none;
+}
 .lds-ring div:nth-child(1) {
     animation-delay: -0.45s;
 }

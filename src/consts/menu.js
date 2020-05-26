@@ -42,7 +42,7 @@ export const sidemenu = [
         {
             id: 3,
             text: "Günlük Yaz",
-            to: "/",
+            to: "/create-diar",
             icon: "fa fa-lock text-warning"
         },
 ]
