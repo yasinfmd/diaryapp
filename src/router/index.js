@@ -9,7 +9,7 @@ import Register from "../pages/register";
 import ForgotPassword from "../pages/forgotpassword"
 import ResetPassword from "../pages/resetpassword"
 import CreateDiar from "../pages/creatediar"
-
+import UserDiar from "../pages/userdiar";
 
 import AuthStore from "../store/authStateProvider"
 import DiaryStore from "../store/diaryStateProvider";
@@ -19,6 +19,8 @@ export default function Routers() {
     return (
         <Router>
             <DiaryStore>
+                <AppRoute path="/my-diar" exact layout={MainLayout} component={UserDiar}
+                          routeProtection={true}></AppRoute>
                 <AppRoute path="/" exact layout={MainLayout} component={Dashboard} routeProtection={true}></AppRoute>
                 <AppRoute path="/create-diar" exact
                           layout={MainLayout}
