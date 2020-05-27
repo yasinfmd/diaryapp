@@ -10,6 +10,7 @@ import Button from "../components/Button";
 import {msgBox} from "../utils/appmsgbox";
 import DiaryContext from "../context/diaryContext";
 import Loading from "../components/loading";
+import PageSubHeader from "../components/pagesubheader";
 
 const CreateDiary = () => {
     const [diartext, setDiarText] = useState("")
@@ -61,13 +62,7 @@ const CreateDiary = () => {
     }
     return (
         <React.Fragment>
-            <Flex column={"col-12"}>
-                <div className="page-title-box">
-                    <h4 className="page-title">Günlük Yaz</h4>
-                </div>
-            </Flex>
-
-
+            <PageSubHeader pagename={"Günlük Yaz"}/>
             <Card>
 
 

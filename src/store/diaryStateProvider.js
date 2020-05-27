@@ -15,10 +15,12 @@ const DiaryStore = ({children}) => {
         let deferred = new Promise(((resolve, reject) => {
             debugger
             diaryDispatch({type: "SET", loading: true})
-            axios.post("http://127.0.0.1:3000/api/dair/", data).then((res) => {
+            debugger
+            axios.post("http://127.0.0.1:3000/api/user/" + data.userid + "/dair", data).then((res) => {
                 debugger
+                console.log("gelen", res)
                 if (res.status === 200) {
-                    diaryDispatch({type: "SET", loading: false, payload: res.data})
+                    diaryDispatch({type: "SET", loading: false, payload: res.data.diaries.reverse()})
                 }
                 resolve(res)
             }).catch((err) => {

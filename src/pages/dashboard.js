@@ -7,41 +7,59 @@ import {msgBox} from "../utils/appmsgbox";
 import {Link} from "react-router-dom";
 import moment from "moment"
 import appmsg from "../utils/appmsg"
+import GlobalContext from "../context/globalContext";
+import {urlParse} from "../utils/appparser";
+import PageSubHeader from "../components/pagesubheader";
+import PageTitleBox from "../components/pagetitlebox";
 
 const Dashboard = (props) => {
+    //userid ekle
+    const {isAuth, user} = useContext(GlobalContext)
     const {fetchdiary, state, dispatch} = useContext(DiaryContext)
     useEffect(() => {
-        fetchdiary({}).then((response) => {
+        const date = new Date();
+        const firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
+        const lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+        const where = urlParse.parse("dairdate>" + firstDay + "&dairdate<" + lastDay)
+
+
+        console.log("şartım", where)
+        fetchdiary({
+            urlparse: where,
+            userid: user._id,
+            fields: "fullname",
+            dairfields: "title content dairdate dairdateString -videos -images "
+        }).then((response) => {
         }).catch((error) => {
             msgBox("error", appmsg.errormsg)
         })
     }, [])
     const renderDiaryItem = () => {
         if (state.diary.length > 0) {
-            console.log(state)
-            /*      return  state.diary.map()*/
             return state.diary.map((diaryItem, index) => {
-                console.log(diaryItem)
                 return (
-                    <Card
-                        key={index}
-                        sub={
-                            <div className="float-right">
-                                <p className="text text-center">
-                                    <Link to={"/diar-detail/" + diaryItem._id}>
-                                        Tamamını Gör ..
-                                    </Link>
-                                    <i className="fa fa-book text-success pl-3"></i>
-                                </p>
+                    <div className="col-6">
+                        <Card
+                            key={index}
+                            sub={
+                                <div className="float-right">
+                                    <p className="text text-center">
+                                        <Link to={"/diar-detail/" + diaryItem._id}>
+                                            {diaryItem.content.length > 300 ? "   Tamamını oku .." : 'Detay'}
 
-                            </div>
-                        }
-                        cardclass={"widget-flat border-primary border"}
-                        cardtext={diaryItem.content.slice(0, 500) + " ..."}
-                    >
-                        <h3 className="mt-3 mb-3 loginTitle font-weight-normal mt-0"
-                            title="Number of Customers">{moment(diaryItem.dairdate).format("LLLL")}</h3>
-                    </Card>
+                                        </Link>
+                                        <i className="fa fa-book text-success pl-3"></i>
+                                    </p>
+
+                                </div>
+                            }
+                            cardclass={"widget-flat border-primary border"}
+                            cardtext={diaryItem.content.slice(0, 300) + " ..."}
+                        >
+                            <h3 className="mt-3 mb-3 loginTitle font-weight-normal mt-0"
+                                title="Number of Customers">{moment(diaryItem.dairdate).format("LLLL")}</h3>
+                        </Card>
+                    </div>
                 )
             })
         } else {
@@ -63,37 +81,11 @@ const Dashboard = (props) => {
 
     return (
         <React.Fragment>
-            <div className="row">
-                <div className="col-12">
-                    <div className="page-title-box">
-                        <div className="page-title-right">
-                            <form className="form-inline">
-                                <div className="form-group">
-                                    <div className="input-group">
-                                        <input type="text" className="form-control form-control-light"
-                                               id="dash-daterange"/>
-                                        <div className="input-group-append">
-                                                    <span
-                                                        className="input-group-text bg-primary border-primary text-white">
-                                                            <i className="mdi mdi-calendar-range font-13"></i>
-                                                        </span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <a href="javascript: void(0);" className="btn btn-primary ml-2">
-                                    <i className="mdi mdi-autorenew"></i>
-                                </a>
-                                <a href="javascript: void(0);" className="btn btn-primary ml-1">
-                                    <i className="mdi mdi-filter-variant"></i>
-                                </a>
-                            </form>
-                        </div>
-                        <h4 className="page-title">AnaSayfa</h4>
-                    </div>
-                </div>
-            </div>
+            <PageSubHeader pagename={"Ana Sayfa"}>
+                <PageTitleBox/>
+            </PageSubHeader>
             <Flex column={"col-xl-12 col-lg-12"}>
-                {state.loading === true ? renderLoading() : <Flex column={"col-lg-6"}> {renderDiaryItem()}</Flex>}
+                {state.loading === true ? renderLoading() : <div className="row"> {renderDiaryItem()}</div>}
 
             </Flex>
 

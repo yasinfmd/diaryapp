@@ -17,10 +17,10 @@ const LoginForm = props => {
     const onLogin = () => {
         login({email, password}).then((response) => {
             if (response.status === 200) {
-                localStorage.setItem("token", JSON.stringify(response.data))
+                localStorage.setItem("token", JSON.stringify(response.data.token))
+                localStorage.setItem("user", JSON.stringify(response.data.user))
                 updateAuth(true)
-                updateUser(response.data)
-                console.log("cevap", response)
+                updateUser(response.data.user)
                 history.push('/')
                 //dispatch token storageset token
             } else if (response.status === 204) {
