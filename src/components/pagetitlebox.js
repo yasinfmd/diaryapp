@@ -1,6 +1,11 @@
-import React, {useState} from "react";
+import React, {useContext, useState} from "react";
 import DatePicker from "./datepicker";
 import Button from "./Button";
+import DiaryContext from "../context/diaryContext";
+import GlobalContext from "../context/globalContext";
+import {urlParse} from "../utils/appparser";
+import {msgBox} from "../utils/appmsgbox";
+import appmsg from "../utils/appmsg";
 
 const PageTitleBox = (props) => {
     const date = new Date();
@@ -8,10 +13,38 @@ const PageTitleBox = (props) => {
     const lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
     const [startDate, setStartDate] = useState(firstDay);
     const [endData, setEndData] = useState(lastDay)
+    const {isAuth, user} = useContext(GlobalContext)
+    const {fetchdiary, state, dispatch} = useContext(DiaryContext)
 
+    const dateValidation = () => {
+        if (startDate != null && endData != null) {
+            fetchFilterDiary()
+        } else {
+            msgBox("error", "Lütfen Başlangıç ve Bitiş Tarih Aralığı Belirtiniz")
+        }
+    }
+
+    const fetchFilterDiary = () => {
+        debugger
+        const firstDay = startDate
+        const lastDay = endData
+        const where = urlParse.parse("dairdate>" + firstDay + "&dairdate<" + lastDay)
+        debugger
+        fetchdiary({
+            urlparse: where,
+            userid: user._id,
+            fields: "fullname",
+            dairfields: "title content dairdate dairdateString -videos -images "
+        }).then((response) => {
+            debugger
+        }).catch((error) => {
+            debugger
+            msgBox("error", appmsg.errormsg)
+        })
+    }
     return (
         <div className="page-title-right">
-            <form className="form-inline">
+            <div className="form-inline">
                 <div className="form-group">
                     <div className="input-group">
                         <DatePicker value={startDate} onChange={(e) => {
@@ -21,9 +54,10 @@ const PageTitleBox = (props) => {
                                     labeltext={"Bitiş Tarihi"}/>
                     </div>
                 </div>
-                <Button icon={"fa fa-undo"} buttonclases={"btn-primary ml-2"} buttontxt={""}></Button>
-                <Button icon={"fa fa-search"} buttonclases={"btn-primary ml-1"} buttontxt={""}></Button>
-            </form>
+                <Button icon={"fa fa-search"} onClick={() => {
+                    dateValidation()
+                }} buttonclases={"btn-primary ml-1"} buttontxt={""}></Button>
+            </div>
         </div>
     )
 }

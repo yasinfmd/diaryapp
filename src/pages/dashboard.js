@@ -23,7 +23,6 @@ const Dashboard = (props) => {
         const where = urlParse.parse("dairdate>" + firstDay + "&dairdate<" + lastDay)
 
 
-        console.log("şartım", where)
         fetchdiary({
             urlparse: where,
             userid: user._id,
