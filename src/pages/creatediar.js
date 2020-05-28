@@ -15,7 +15,7 @@ import PageSubHeader from "../components/pagesubheader";
 const CreateDiary = () => {
     const [diartext, setDiarText] = useState("")
     const [diartitle, setDiarTitle] = useState("")
-    const {isAuth, user} = useContext(GlobalContext)
+    const {user} = useContext(GlobalContext)
     const {creatediary, state, dispatch} = useContext(DiaryContext)
     console.log(state)
     const onChangeEditor = (e) => {

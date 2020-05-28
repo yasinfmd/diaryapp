@@ -4,7 +4,6 @@ import {Link} from "react-router-dom";
 
 const SideBarAccount = () => {
     const {user} = useContext(GlobalContext)
-    console.log(user)
     return (
         <div className="leftbar-user">
             <Link to={"/"}>

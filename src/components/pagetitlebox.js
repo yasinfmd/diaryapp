@@ -13,9 +13,8 @@ const PageTitleBox = (props) => {
     const lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
     const [startDate, setStartDate] = useState(firstDay);
     const [endData, setEndData] = useState(lastDay)
-    const {isAuth, user} = useContext(GlobalContext)
-    const {fetchdiary, state, dispatch} = useContext(DiaryContext)
-
+    const {user} = useContext(GlobalContext)
+    const {fetchdiary} = useContext(DiaryContext)
     const dateValidation = () => {
         if (startDate != null && endData != null) {
             fetchFilterDiary()

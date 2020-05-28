@@ -8,8 +8,29 @@ const DiaryStore = ({children}) => {
     const initialState = {
         diary: [],
         loading: false,
+        groupeduserdiary: []
     }
     const [diaryState, diaryDispatch] = useReducer(diaryReducers, initialState)
+
+    const fetchUserGroupedDiary = (data) => {
+        let deferred = new Promise(((resolve, reject) => {
+            debugger
+            diaryDispatch({type: "SETGROUPEDDIARY", loading: true})
+            debugger
+            axios.post("http://127.0.0.1:3000/api/user/dairgroup", data).then((res) => {
+                debugger
+                console.log("gelen", res)
+                if (res.status === 200) {
+                    diaryDispatch({type: "SETGROUPEDDIARY", loading: false, payload: res.data})
+                }
+                resolve(res)
+            }).catch((err) => {
+                diaryDispatch({type: "SETGROUPEDDIARY", loading: false})
+                reject(err)
+            })
+        }))
+        return deferred
+    }
 
     const fetch = (data) => {
         let deferred = new Promise(((resolve, reject) => {
@@ -55,7 +76,8 @@ const DiaryStore = ({children}) => {
             state: diaryState,
             dispatch: diaryDispatch,
             creatediary: create,
-            fetchdiary: fetch
+            fetchdiary: fetch,
+            fetchUserGroupedDiary: fetchUserGroupedDiary
         }}>
             {children}
         </DiaryContext.Provider>
