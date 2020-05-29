@@ -1,14 +1,17 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './App';
+import {BrowserRouter} from "react-router-dom"
+import WithRouterApp from "./App";
 import * as serviceWorker from './serviceWorker';
 import GlobalStore from "./store/globalStateProvider";
 
 ReactDOM.render(
     <React.StrictMode>
+        <BrowserRouter>
         <GlobalStore>
-            <App/>
+           <WithRouterApp/>
         </GlobalStore>
+        </BrowserRouter>
     </React.StrictMode>,
     document.getElementById('root')
 );

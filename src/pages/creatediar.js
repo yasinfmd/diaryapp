@@ -17,7 +17,6 @@ const CreateDiary = () => {
     const [diartitle, setDiarTitle] = useState("")
     const {user} = useContext(GlobalContext)
     const {creatediary, state, dispatch} = useContext(DiaryContext)
-    console.log(state)
     const onChangeEditor = (e) => {
         setDiarText(e)
     }
