@@ -1,10 +1,14 @@
-import React, {useReducer, useEffect, useContext} from "react";
+import React, {useReducer} from "react";
 import axios from "axios"
 import diaryReducers from "../reducers/diaryReducers";
 import DiaryContext from "../context/diaryContext";
+import header from "../utils/axiosheader";
+import {useHistory} from "react-router-dom";
+import {msgBox} from "../utils/appmsgbox";
 
 
 const DiaryStore = ({children}) => {
+    let history = useHistory();
     const initialState = {
         diary: [],
         loading: false,
@@ -25,6 +29,12 @@ const DiaryStore = ({children}) => {
                 }
                 resolve(res)
             }).catch((err) => {
+                if (err.response.status === 401) {
+                    history.replace("/login")
+                    localStorage.clear()
+                    msgBox("info", "Oturumunuzun Süresi Dolduğu İçin Giriş Sayfasına Yönlendiriliyorsunuz")
+                    return
+                }
                 diaryDispatch({type: "SETGROUPEDDIARY", loading: false})
                 reject(err)
             })
@@ -37,7 +47,7 @@ const DiaryStore = ({children}) => {
             debugger
             diaryDispatch({type: "SET", loading: true})
             debugger
-            axios.post("http://127.0.0.1:3000/api/user/" + data.userid + "/dair", data).then((res) => {
+            axios.post("http://127.0.0.1:3000/api/user/" + data.userid + "/dair", data, header()).then((res) => {
                 debugger
                 console.log("gelen", res)
                 if (res.status === 200) {
@@ -45,6 +55,12 @@ const DiaryStore = ({children}) => {
                 }
                 resolve(res)
             }).catch((err) => {
+                if (err.response.status === 401) {
+                    history.replace("/login")
+                    localStorage.clear()
+                    msgBox("info", "Oturumunuzun Süresi Dolduğu İçin Giriş Sayfasına Yönlendiriliyorsunuz")
+                    return
+                }
                 diaryDispatch({type: "SET", loading: false})
                 reject(err)
             })
@@ -64,6 +80,12 @@ const DiaryStore = ({children}) => {
                 }
                 resolve(res)
             }).catch((err) => {
+                if (err.response.status === 401) {
+                    history.replace("/login")
+                    localStorage.clear()
+                    msgBox("info", "Oturumunuzun Süresi Dolduğu İçin Giriş Sayfasına Yönlendiriliyorsunuz")
+                    return
+                }
                 diaryDispatch({type: "CREATE", loading: false})
                 reject(err)
             })
