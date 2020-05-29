@@ -7,22 +7,28 @@ import {msgBox} from "../utils/appmsgbox"
 import AuthContext from "../context/authContext";
 import {useHistory} from "react-router-dom";
 import GlobalContext from "../context/globalContext";
+import parseJwt from "../utils/apptokendecoder";
 
 const LoginForm = props => {
     const [email, bindemail, resetemail, emailValidate] = useInput('', emailValidator)
     const [password, bindpassword, resetpassword, passwordValidate] = useInput('', passwordValidator)
     const {login} = useContext(AuthContext)
-    const {updateUser, updateAuth} = useContext(GlobalContext)
+    const {updateUser, updateAuth, setExpiresin} = useContext(GlobalContext)
     let history = useHistory();
     const onLogin = () => {
         login({email, password}).then((response) => {
             if (response.status === 200) {
+                const parsedToken = parseJwt(response.data.token)
+                const exp = parsedToken.exp
+                const iat = parsedToken.iat
+                const expseconds = exp - iat
+                setExpiresin(+expseconds * 1000)
+                localStorage.setItem("expirationDate", new Date().getTime() + expseconds * 1000)
                 localStorage.setItem("token", JSON.stringify(response.data.token))
                 localStorage.setItem("user", JSON.stringify(response.data.user))
                 updateAuth(true)
                 updateUser(response.data.user)
                 history.push('/')
-                //dispatch token storageset token
             } else if (response.status === 204) {
                 msgBox("warning", "Kullanıcı Adı Veya Parola Hatalı")
             }

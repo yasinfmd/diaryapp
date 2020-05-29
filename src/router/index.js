@@ -1,4 +1,4 @@
-import React, {useContext} from 'react'
+import React, {useContext, useEffect} from 'react'
 import {BrowserRouter as Router, Route, Switch, Redirect} from 'react-router-dom'
 import MainLayout from "../layouts/mainlayout"
 import LoginLayout from "../layouts/loginlayout"
@@ -13,19 +13,17 @@ import UserDiar from "../pages/userdiar";
 
 import AuthStore from "../store/authStateProvider"
 import DiaryStore from "../store/diaryStateProvider";
-
 export default function Routers() {
-
     return (
         <Router>
             <DiaryStore>
                 <AppRoute path="/my-diar" exact layout={MainLayout} component={UserDiar}
-                          routeProtection={true}></AppRoute>
-                <AppRoute path="/" exact layout={MainLayout} component={Dashboard} routeProtection={true}></AppRoute>
+                          routeProtection={true}/>
+                <AppRoute path="/" exact layout={MainLayout} component={Dashboard} routeProtection={true}/>
                 <AppRoute path="/create-diar" exact
                           layout={MainLayout}
                           component={CreateDiar}
-                          routeProtection={true}></AppRoute>
+                          routeProtection={true}/>
             </DiaryStore>
             <AuthStore>
                 <AppRoute path="/resetpassword/:token" header={"Yeni Parola Oluştur"}
@@ -34,25 +32,25 @@ export default function Routers() {
                           footertext={""}
                           footer={""} layout={LoginLayout}
                           component={ResetPassword}
-                          routeProtection={false}></AppRoute>
+                          routeProtection={false}/>
 
                 <AppRoute path="/forgotpassword" header={"Parola Sıfırlama"}
                           footerurl={"/login"}
                           footertext={"Geri Dön"}
                           footer={"Giriş Yap"} layout={LoginLayout}
                           component={ForgotPassword}
-                          routeProtection={false}></AppRoute>
+                          routeProtection={false}/>
                 <AppRoute path="/login" header={"Giriş Yap"}
                           footertext={"Hesabın Yok Mu ?"}
                           footerurl={"/register"}
                           footer={"Kayıt Ol"} layout={LoginLayout} component={Login}
-                          routeProtection={false}></AppRoute>
+                          routeProtection={false}/>
                 <AppRoute path="/register" header={"Kayıt Ol"}
                           footerurl={"/login"}
                           footertext={"Hesabın Var Mı ?"}
 
                           footer={"Giriş Yap"} layout={LoginLayout} component={Register}
-                          routeProtection={false}></AppRoute>
+                          routeProtection={false}/>
             </AuthStore>
             {/*   <Redirect from='*' to='/login' />*/}
         </Router>

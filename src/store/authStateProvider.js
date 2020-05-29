@@ -6,11 +6,13 @@ import GlobalContext from "../context/globalContext";
 
 
 const AuthStore = ({children}) => {
-    const {updateAuth} = useContext(GlobalContext)
+    const {updateUser, updateAuth, logout} = useContext(GlobalContext)
     const initialState = {
         msg: "", loading: false, status: null
     }
     const [authState, authDispatch] = useReducer(authReducers, initialState)
+
+
 
     const forgotpassword = async (data) => {
         return new Promise(((resolve, reject) => {
@@ -38,6 +40,8 @@ const AuthStore = ({children}) => {
             })
         }))
     }
+
+
     const passwordtokencheck = (token) => {
         return new Promise(((resolve, reject) => {
             axios.get("http://127.0.0.1:3000/api/auth/checktoken/" + token).then((response) => {
@@ -81,7 +85,7 @@ const AuthStore = ({children}) => {
             login: login,
             forgotpassword: forgotpassword,
             passwordtokencheck: passwordtokencheck,
-            updatepass:updatepass
+            updatepass: updatepass,
         }}>
             {children}
         </AuthContext.Provider>

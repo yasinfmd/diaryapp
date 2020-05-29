@@ -37,7 +37,7 @@ const Dashboard = (props) => {
         if (state.diary.length > 0) {
             return state.diary.map((diaryItem, index) => {
                 return (
-                    <div className="col-6">
+                    <div className="col-6" key={index}>
                         <Card
                             key={index}
                             sub={

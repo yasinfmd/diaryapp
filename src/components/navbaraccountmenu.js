@@ -2,18 +2,16 @@ import React, {useContext, useState} from "react";
 import {menu} from "../consts/menu";
 import {useHistory} from "react-router-dom";
 import GlobalContext from "../context/globalContext";
+import AuthContext from "../context/authContext";
 
 const NavBarAccountMenu = () => {
     const [menuList, setMenuList] = useState(menu)
-    const {updateUser, updateAuth} = useContext(GlobalContext)
-    let history = useHistory();
+    const {logout} = useContext(GlobalContext)
     const clickMenuItem = (menuItem) => {
         if (menuItem.text == "Çıkış Yap") {
-            localStorage.removeItem("token")
-            localStorage.removeItem("user")
-            updateAuth(true)
-            updateUser(null)
-            history.replace("/login")
+
+            debugger
+            logout()
         }
     }
     const renderMenuItem = (menuItem, index) => {

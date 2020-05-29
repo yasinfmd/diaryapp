@@ -50,7 +50,7 @@ export default function UserDiar() {
             return state.groupeduserdiary.map((diaryItem, index) => {
 
                 return (
-                    <AccordionItem title={datewithnumber(diaryItem._id.month) + " " + diaryItem._id.year}
+                    <AccordionItem  key={index} title={datewithnumber(diaryItem._id.month) + " " + diaryItem._id.year}
                                    onClick={() => {
                                        fetchUserDiar(diaryItem._id.year, diaryItem._id.month)
                                    }} git id={"accordionitem" + index} headid={"accordionitemheader" + index}

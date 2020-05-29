@@ -1,4 +1,4 @@
-import React, {useContext, useState} from "react";
+import React, {useContext} from "react";
 import {useHistory} from "react-router-dom";
 import Button from "./Button";
 import InputForm from "./formInput";
@@ -6,13 +6,10 @@ import {emailValidator, passwordValidator, nameValidator, surnameValidator} from
 import AuthContext from "../context/authContext";
 import Loading from "./loading";
 import useInput from "../customHooks/useInput";
-import useHttp from "../customHooks/useHttp";
 import {msgBox} from "../utils/appmsgbox";
 
 const RegisterForm = props => {
     let history = useHistory();
-    const res = useHttp("http://jsonplaceholder.typicode.com/comments", {}, "GET", {})
-    console.log(res)
     const [email, bindemail, resetemail, emailValidate] = useInput('', emailValidator)
     const [password, bindpassword, resetpassword, passwordValidate] = useInput('', passwordValidator)
     const [name, bindname, resetname, nameValidate] = useInput('', nameValidator)

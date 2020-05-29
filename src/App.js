@@ -1,18 +1,18 @@
-import React from 'react';
+import React, {useContext, useEffect} from 'react';
 import './App.css';
-import Routers from "./router/index"
-import GlobalStore from "./store/globalStateProvider";
 import 'sweetalert2/src/sweetalert2.scss'
 import "moment/locale/tr"
-
+import GlobalContext from "./context/globalContext";
+import Routers from "./router/index"
 function App() {
+    const {initAuth} = useContext(GlobalContext)
+    useEffect(() => {
+        initAuth()
+    }, [])
     return (
         <React.Fragment>
-            <GlobalStore>
-            <Routers/>
-            </GlobalStore>
+                <Routers/>
         </React.Fragment>
     );
 }
-
 export default App;

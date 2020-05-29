@@ -7,7 +7,7 @@ const SideBar = () => {
 
     const renderSideMenuItem = (menuItem, index) => {
         return (
-            <li className="side-nav-item">
+            <li className="side-nav-item" key={index}>
                 <Link to={menuItem.to} key={index} className="side-nav-link active">
                     <i className={menuItem.icon}></i>
                     <span> {menuItem.text} </span>

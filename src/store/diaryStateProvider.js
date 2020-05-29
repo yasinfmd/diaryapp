@@ -18,12 +18,8 @@ const DiaryStore = ({children}) => {
 
     const fetchUserGroupedDiary = (data) => {
         let deferred = new Promise(((resolve, reject) => {
-            debugger
             diaryDispatch({type: "SETGROUPEDDIARY", loading: true})
-            debugger
-            axios.post("http://127.0.0.1:3000/api/user/dairgroup", data).then((res) => {
-                debugger
-                console.log("gelen", res)
+            axios.post("http://127.0.0.1:3000/api/user/dairgroup", data,header()).then((res) => {
                 if (res.status === 200) {
                     diaryDispatch({type: "SETGROUPEDDIARY", loading: false, payload: res.data})
                 }
@@ -71,7 +67,7 @@ const DiaryStore = ({children}) => {
     const create = (data) => {
         let deferred = new Promise(((resolve, reject) => {
             debugger
-            axios.post("http://127.0.0.1:3000/api/dair/create", data).then((res) => {
+            axios.post("http://127.0.0.1:3000/api/dair/create", data,header()).then((res) => {
                 debugger
                 if (res.status === 200) {
                     diaryDispatch({type: "CREATE", loading: false, payload: res.data})
