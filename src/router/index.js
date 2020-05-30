@@ -11,6 +11,7 @@ import ResetPassword from "../pages/resetpassword"
 import CreateDiar from "../pages/creatediar"
 import UserDiar from "../pages/userdiar";
 import ChangePassword from "../pages/changepassword";
+import UserProfile from "../pages/userprofile";
 
 import AuthStore from "../store/authStateProvider"
 import DiaryStore from "../store/diaryStateProvider";
@@ -30,6 +31,10 @@ export default function Routers() {
             </DiaryStore>
             <AuthStore>
                 <UserStore>
+                    <AppRoute path="/profile" exact
+                              layout={MainLayout}
+                              component={UserProfile}
+                              routeProtection={true}/>
                     <AppRoute path="/change-password" exact
                               layout={MainLayout}
                               component={ChangePassword}

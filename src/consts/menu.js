@@ -2,13 +2,13 @@ export const menu = [
     {
         id: 1,
         text: "Profilim",
-        to: "/",
+        to: "/profile",
         icon: "fa fa-user text-primary"
     },
     {
         id: 2,
         text: "Günlüklerim",
-        to: "/",
+        to: "/my-diar",
         icon: "fa fa-calendar text-success"
     },
     {

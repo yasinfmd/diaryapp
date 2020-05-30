@@ -1,51 +1,52 @@
 export const urlParse = {
     parse: function (value, type) {
-        var dizi = [];
+        var parsedarray = [];
         var param = value.split("&");
+        var val;
         param.forEach(function (row, index) {
             if (row.indexOf("=") > 0) {
-                var value = row.split("=");
+                val = row.split("=");
 
-                dizi.push({
-                    PropertyName: value[0],
-                    Operation: value[1].split(",").length > 1 ? "IN" : "EQ",
-                    PropertyValue: value[1]
+                parsedarray.push({
+                    PropertyName: val[0],
+                    Operation: val[1].split(",").length > 1 ? "IN" : "EQ",
+                    PropertyValue: val[1]
                 });
             } else if (row.indexOf("<") > 0) {
-                var value = row.split("<");
-                dizi.push({
-                    PropertyName: value[0],
+                val = row.split("<");
+                parsedarray.push({
+                    PropertyName: val[0],
                     Operation: "LT",
-                    PropertyValue: value[1]
+                    PropertyValue: val[1]
                 });
             } else if (row.indexOf(">") > 0) {
-                var value = row.split(">");
-                dizi.push({
-                    PropertyName: value[0],
+                val = row.split(">");
+                parsedarray.push({
+                    PropertyName: val[0],
                     Operation: "GT",
-                    PropertyValue: value[1]
+                    PropertyValue: val[1]
                 });
             } else if (row.indexOf("%") > 0) {
-                var value = row.split("%");
-                dizi.push({
-                    PropertyName: value[0],
+                val = row.split("%");
+                parsedarray.push({
+                    PropertyName: val[0],
                     Operation: "CT",
-                    PropertyValue: value[1]
+                    PropertyValue: val[1]
                 });
             } else if (row.indexOf("-") > 0) {
-                var value = row.split("-");
-                dizi.push({
-                    PropertyName: value[0],
+                val = row.split("-");
+                parsedarray.push({
+                    PropertyName: val[0],
                     Operation: "NE",
-                    PropertyValue: value[1]
+                    PropertyValue: val[1]
                 });
             } else if (row.indexOf("!") > 0) {
-                var value = row.split("!");
+                val = row.split("!");
                 if (type == "N") {
-                    value[1] = parseFloat(value[1]);
+                    val[1] = parseFloat(val[1]);
                 }
             }
         });
-        return dizi;
+        return parsedarray;
     },
 }
