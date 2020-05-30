@@ -4,7 +4,6 @@ import {Link} from "react-router-dom";
 
 const SideBar = () => {
     const [sideMenu, setSideMenu] = useState(sidemenu)
-
     const renderSideMenuItem = (menuItem, index) => {
         return (
             <li className="side-nav-item" key={index}>

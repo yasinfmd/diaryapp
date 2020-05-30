@@ -14,7 +14,7 @@ export const menu = [
     {
         id: 3,
         text: "Parola Değiştir",
-        to: "/",
+        to: "/change-password",
         icon: "fa fa-lock text-warning"
     },
     {

@@ -10,12 +10,14 @@ import ForgotPassword from "../pages/forgotpassword"
 import ResetPassword from "../pages/resetpassword"
 import CreateDiar from "../pages/creatediar"
 import UserDiar from "../pages/userdiar";
+import ChangePassword from "../pages/changepassword";
 
 import AuthStore from "../store/authStateProvider"
 import DiaryStore from "../store/diaryStateProvider";
 export default function Routers() {
     return (
         <Router>
+
             <DiaryStore>
                 <AppRoute path="/my-diar" exact layout={MainLayout} component={UserDiar}
                           routeProtection={true}/>
@@ -26,6 +28,11 @@ export default function Routers() {
                           routeProtection={true}/>
             </DiaryStore>
             <AuthStore>
+                <AppRoute path="/change-password" exact
+                          layout={MainLayout}
+                          component={ChangePassword}
+                          routeProtection={true}/>
+
                 <AppRoute path="/resetpassword/:token" header={"Yeni Parola Oluştur"}
                           footerurl={"/login"}
 

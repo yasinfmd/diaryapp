@@ -1,28 +1,37 @@
 import React, {useContext, useState} from "react";
 import {menu} from "../consts/menu";
-import {useHistory} from "react-router-dom";
+import {Link, useHistory} from "react-router-dom";
 import GlobalContext from "../context/globalContext";
 import AuthContext from "../context/authContext";
 
 const NavBarAccountMenu = () => {
+    const history = useHistory();
     const [menuList, setMenuList] = useState(menu)
     const {logout} = useContext(GlobalContext)
     const clickMenuItem = (menuItem) => {
-        if (menuItem.text == "Çıkış Yap") {
-
-            debugger
             logout()
-        }
     }
     const renderMenuItem = (menuItem, index) => {
         return (
-            <a href="#" onClick={(e) => {
+            <Link to={menuItem.to}  key={index}
+                  onClick={(e)=>{
+                      if(menuItem.text=="Çıkış Yap"){
+                          e.preventDefault()
+                          clickMenuItem(menuItem)
+                      }
+                  }}
+                  className="dropdown-item notify-item">
+                <i className={menuItem.icon + " " + "mr-1"}></i>
+                <span>{menuItem.text}</span>
+
+            </Link>
+           /* <a href="#" onClick={(e) => {
                 e.preventDefault()
-                clickMenuItem(menuItem)
+
             }} key={index} className="dropdown-item notify-item">
                 <i className={menuItem.icon + " " + "mr-1"}></i>
                 <span>{menuItem.text}</span>
-            </a>
+            </a>*/
         )
     }
     return (
