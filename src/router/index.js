@@ -14,10 +14,11 @@ import ChangePassword from "../pages/changepassword";
 
 import AuthStore from "../store/authStateProvider"
 import DiaryStore from "../store/diaryStateProvider";
+import UserStore from "../store/userStateProvider";
+
 export default function Routers() {
     return (
         <Router>
-
             <DiaryStore>
                 <AppRoute path="/my-diar" exact layout={MainLayout} component={UserDiar}
                           routeProtection={true}/>
@@ -28,36 +29,38 @@ export default function Routers() {
                           routeProtection={true}/>
             </DiaryStore>
             <AuthStore>
-                <AppRoute path="/change-password" exact
-                          layout={MainLayout}
-                          component={ChangePassword}
-                          routeProtection={true}/>
+                <UserStore>
+                    <AppRoute path="/change-password" exact
+                              layout={MainLayout}
+                              component={ChangePassword}
+                              routeProtection={true}/>
 
-                <AppRoute path="/resetpassword/:token" header={"Yeni Parola Oluştur"}
-                          footerurl={"/login"}
+                    <AppRoute path="/resetpassword/:token" header={"Yeni Parola Oluştur"}
+                              footerurl={"/login"}
 
-                          footertext={""}
-                          footer={""} layout={LoginLayout}
-                          component={ResetPassword}
-                          routeProtection={false}/>
+                              footertext={""}
+                              footer={""} layout={LoginLayout}
+                              component={ResetPassword}
+                              routeProtection={false}/>
 
-                <AppRoute path="/forgotpassword" header={"Parola Sıfırlama"}
-                          footerurl={"/login"}
-                          footertext={"Geri Dön"}
-                          footer={"Giriş Yap"} layout={LoginLayout}
-                          component={ForgotPassword}
-                          routeProtection={false}/>
-                <AppRoute path="/login" header={"Giriş Yap"}
-                          footertext={"Hesabın Yok Mu ?"}
-                          footerurl={"/register"}
-                          footer={"Kayıt Ol"} layout={LoginLayout} component={Login}
-                          routeProtection={false}/>
-                <AppRoute path="/register" header={"Kayıt Ol"}
-                          footerurl={"/login"}
-                          footertext={"Hesabın Var Mı ?"}
+                    <AppRoute path="/forgotpassword" header={"Parola Sıfırlama"}
+                              footerurl={"/login"}
+                              footertext={"Geri Dön"}
+                              footer={"Giriş Yap"} layout={LoginLayout}
+                              component={ForgotPassword}
+                              routeProtection={false}/>
+                    <AppRoute path="/login" header={"Giriş Yap"}
+                              footertext={"Hesabın Yok Mu ?"}
+                              footerurl={"/register"}
+                              footer={"Kayıt Ol"} layout={LoginLayout} component={Login}
+                              routeProtection={false}/>
+                    <AppRoute path="/register" header={"Kayıt Ol"}
+                              footerurl={"/login"}
+                              footertext={"Hesabın Var Mı ?"}
 
-                          footer={"Giriş Yap"} layout={LoginLayout} component={Register}
-                          routeProtection={false}/>
+                              footer={"Giriş Yap"} layout={LoginLayout} component={Register}
+                              routeProtection={false}/>
+                </UserStore>
             </AuthStore>
             {/*   <Redirect from='*' to='/login' />*/}
         </Router>
