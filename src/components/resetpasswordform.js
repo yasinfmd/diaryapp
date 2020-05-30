@@ -53,9 +53,9 @@ const PasswordResetForm = props => {
             <InputForm placeholder={"Parola"}
                        type={"password"}
                        sublabel={true}
+                       {...bindpassword}
                        sublabelclass={passwordValidate === true ? (confirmpassword != password) ? "invalid-feedback" : "valid-feedback" : 'invalid-feedback'}
                        sublabeltext={passwordValidate === true ? (confirmpassword != password) ? "Parolalar Eşleşmiyor" : '' : "Parola Geçersiz"}
-                       {...bindpassword}
                        forminputclass={passwordValidate === true ? (confirmpassword != password) ? "is-invalid" : "is-valid" : "is-invalid"}
                        toplabel={true}
                        toplabeltext={"Parola"}

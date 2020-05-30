@@ -2,7 +2,6 @@ import React, {useContext, useState} from "react";
 import {menu} from "../consts/menu";
 import {Link, useHistory} from "react-router-dom";
 import GlobalContext from "../context/globalContext";
-import AuthContext from "../context/authContext";
 
 const NavBarAccountMenu = () => {
     const history = useHistory();
