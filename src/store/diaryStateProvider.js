@@ -69,11 +69,7 @@ const DiaryStore = ({children}) => {
 
     const create = (data) => {
         let deferred = new Promise(((resolve, reject) => {
-            debugger
-            console.log("diarystate", diaryState)
-            console.log("mrb")
             axios.post("http://127.0.0.1:3000/api/dair/create", data, header()).then((res) => {
-                debugger
                 if (res.status === 200) {
                     diaryDispatch({type: "CREATE", loading: false, payload: [...diaryState.diary, res.data]})
                 } else if (res.status === 204) {
