@@ -36,7 +36,7 @@ export const sidemenu = [
         {
             id: 2,
             text: "Günlüklerim",
-            to: "/",
+            to: "/my-diar",
             icon: "fa fa-calendar text-success"
         },
         {

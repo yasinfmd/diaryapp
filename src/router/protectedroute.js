@@ -5,7 +5,6 @@ import GlobalContext from "../context/globalContext";
 const ProtectedRoute = ({component: Component, ...rest}) => {
     const {isAuth, initAuth} = useContext(GlobalContext)
     useEffect(() => {
-        alert("ben rotayım")
         initAuth()
     }, [])
     return (

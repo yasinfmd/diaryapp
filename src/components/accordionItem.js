@@ -3,7 +3,7 @@ import Accordion from "./accordion";
 
 const AccordionItem = (props) => {
     return (
-        <div className="card mb-0">
+        <div className="card mb-0"  >
             <div className="card-header" id={props.headid}>
                 <h5 className="m-0">
                     <a className="custom-accordion-title collapsed d-block py-1"
@@ -15,7 +15,7 @@ const AccordionItem = (props) => {
                     </a>
                 </h5>
             </div>
-            <div id={props.id} className="collapse"
+            <div id={props.id} className={props.cl}
                  aria-labelledby={props.headid}
                  data-parent="#custom-accordion-one">
                 <div className="card-body">
