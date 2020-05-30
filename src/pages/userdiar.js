@@ -49,6 +49,7 @@ export default function UserDiar() {
     }
     const renderDiaryItem = () => {
         if (state.loading == false && state.diary.length > 0) {
+            debugger
             return state.diary.map((diaryItem, index) => {
                 return (
                     <div className="col-12" key={index}>
@@ -80,7 +81,6 @@ export default function UserDiar() {
 
     }
     const setaccordionClass = (diaryItem) => {
-        console.log(state.groupeduserdiary)
         state.groupeduserdiary.forEach((item) => {
             if (item._id.month == diaryItem._id.month && item._id.year == diaryItem._id.year) {
                 if (diaryItem.accordionClass == "collapse") {
@@ -95,6 +95,7 @@ export default function UserDiar() {
 
     }
     const renderAccordionItem = () => {
+        debugger
         if (state.loading === false && state.groupeduserdiary.length > 0) {
             return state.groupeduserdiary.map((diaryItem, index) => {
                 return (
