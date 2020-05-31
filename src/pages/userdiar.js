@@ -31,8 +31,7 @@ export default function UserDiar() {
 
         const date = new Date(year, mont - 1)
         var firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
-        var lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
-
+        var lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0,24,0,0,0);
         const where = urlParse.parse("dairdate>" + firstDay + "&dairdate<" + lastDay)
         fetchdiary({
             urlparse: where,

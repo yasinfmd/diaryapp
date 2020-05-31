@@ -17,9 +17,11 @@ const Dashboard = (props) => {
     const {isAuth, user} = useContext(GlobalContext)
     const {fetchdiary, state, dispatch} = useContext(DiaryContext)
     useEffect(() => {
-        const date = new Date();
+        const firstDay = moment().startOf('month').format('YYYY-MM-DD');
+        const lastDay   = moment().endOf('month').format('YYYY-MM-DD HH:mm');
+       /* const date = new Date();
         const firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
-        const lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+        const lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);*/
         const where = urlParse.parse("dairdate>" + firstDay + "&dairdate<" + lastDay)
 
 

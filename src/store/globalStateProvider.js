@@ -20,6 +20,7 @@ const GlobalStore = ({children}) => {
         setIsAuth(auth)
     }
     const updateUser = (user) => {
+        debugger
         setUser(user)
     }
     const logout = () => {
