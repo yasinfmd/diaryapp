@@ -10,6 +10,7 @@ import {ImageValidator} from "../utils/appimagevalidator";
 import {readFileBase64} from "../utils/appimageconverter";
 import Card from "../components/card";
 import UpdateImageCard from "../components/updateimagecard";
+import EditUserForm from "../components/edituserform";
 
 export default function UserProfile() {
     let fileInput = useRef()
@@ -18,10 +19,9 @@ export default function UserProfile() {
     const [editedImageMode, setEditedImageMode] = useState(false)
     const [base64, setBase64] = useState(null)
     const {userstate, userdispatch, show, updateProfileImg} = useContext(UserContext)
-
     const [prof, setprof] = useState(null)
     useEffect(() => {
-        show({id: user._id, fields: "fullname image email diaries"}).then((response) => {
+        show({id: user._id, fields: "fullname image name surname email diaries"}).then((response) => {
             debugger
         }).catch((error) => {
             debugger
@@ -77,10 +77,12 @@ export default function UserProfile() {
             console.log("bakstate", userstate)
             renderitem = <ProfileCard src={userstate.user.image}
                                       onImageEditClick={() => {
+                                          setEditedMode(false)
                                           setEditedImageMode(!editedImageMode)
                                       }
                                       }
                                       onEditClick={() => {
+                                          setEditedImageMode(false)
                                           setEditedMode(!editedMode)
                                       }
                                       }
@@ -114,6 +116,13 @@ export default function UserProfile() {
                                      }}/>
                 </Card>
             </Flex>) : null}
+            {editedMode === true ? <Flex column={"col-12"}>
+                <Card>
+                    <EditUserForm name={userstate.user.name} surname={userstate.user.surname}
+                                  email={userstate.user.email}/>
+                </Card>
+            </Flex> : null
+            }
         </React.Fragment>
 
     )

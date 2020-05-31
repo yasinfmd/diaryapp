@@ -1,9 +1,9 @@
 import {useState} from "react"
 import {emailValidator} from "../utils/appvalidator";
 
-function useInput(initialVal, validation) {
+function useInput(initialVal, validation, defaultvalidation) {
     const [value, setValue] = useState(initialVal)
-    const [validate, setValidate] = useState(false)
+    const [validate, setValidate] = useState(defaultvalidation ? defaultvalidation : false)
     const reset = () => {
         setValue(initialVal)
     }
@@ -18,7 +18,7 @@ function useInput(initialVal, validation) {
             setValue(e.target.value)
         }
     }
-    return [value, bind, reset,validate]
+    return [value, bind, reset, validate]
 }
 
 export default useInput

@@ -1,35 +1,50 @@
-import React, {useContext} from "react";
-import {useHistory} from "react-router-dom";
-import Button from "./Button";
+import React, {useContext, useState} from "react";
 import InputForm from "./formInput";
-import {emailValidator, passwordValidator, nameValidator, surnameValidator} from "../utils/appvalidator";
-import AuthContext from "../context/authContext";
-import Loading from "./loading";
 import useInput from "../customHooks/useInput";
+import {nameValidator, surnameValidator, emailValidator, passwordValidator} from "../utils/appvalidator";
+import Button from "./Button";
+import Loading from "./loading";
 import {msgBox} from "../utils/appmsgbox";
+import UserContext from "../context/userContext";
+import GlobalContext from "../context/globalContext";
+import {urlParse} from "../utils/appparser";
 
-const RegisterForm = props => {
-    let history = useHistory();
-    const [email, bindemail, resetemail, emailValidate] = useInput('', emailValidator)
-    const [password, bindpassword, resetpassword, passwordValidate] = useInput('', passwordValidator)
-    const [name, bindname, resetname, nameValidate] = useInput('', nameValidator)
-    const [surname, bindsurname, resetsurname, surnameValidate] = useInput('', surnameValidator)
-    const {state, dispatch, register} = useContext(AuthContext)
-    const onRegister = async () => {
-        dispatch({type: "REGISTER", registermsg: "", loading: true})
-        const result = await register({
-            name,
-            surname,
-            password,
-            email
-        })
-        if (result.status === 200) {
-            history.push('/login')
-            resetemail()
-            resetname()
-            resetpassword()
-            resetsurname()
+const EditUserForm = (props) => {
+    const [loading, setLoading] = useState(false)
+    const {user} = useContext(GlobalContext)
+    const [email, bindemail, resetemail, emailValidate] = useInput(props.email, emailValidator, true)
+    const [name, bindname, resetname, nameValidate] = useInput(props.name, nameValidator, true)
+    const [surname, bindsurname, resetsurname, surnameValidate] = useInput(props.surname, surnameValidator, true)
+    const {userstate, update} = useContext(UserContext)
+    const resetForm = () => {
+        resetemail()
+        resetname()
+        resetsurname()
+    }
+
+    const onUpdateUser = () => {
+        const iseq = sameusercontrol()
+        if (iseq) {
+            msgBox("info", "Lütfen Alanları Güncelleyiniz")
+        } else {
+            debugger
+            const where = urlParse.parse("_id=" + user._id)
+            update({urlparse: where, name: name, surname: surname, email: email}).then((response) => {
+                debugger
+                resetForm()
+            }).catch((error) => {
+                msgBox("error", "Güncelleme İşlemi Sırasında Hata Gerçekleşti")
+            })
+            /*update*/
         }
+        //resetForm()
+    }
+
+    const sameusercontrol = () => {
+        return userstate.user.name.trim().toLocaleLowerCase() === name.trim().toLocaleLowerCase() &&
+            userstate.user.surname.trim().toLocaleLowerCase() === surname.trim().toLocaleLowerCase() &&
+            userstate.user.email.trim().toLocaleLowerCase() === email.trim().toLocaleLowerCase();
+
     }
 
     const validateForm = () => {
@@ -39,15 +54,12 @@ const RegisterForm = props => {
             msgBox("error", "Lütfen Geçerli Bir SoyAd Giriniz")
         } else if (!emailValidator(email)) {
             msgBox("error", "Lütfen Geçerli Bir Email Giriniz")
-        } else if (!passwordValidator(password)) {
-            msgBox("error", "Lütfen Geçerli Bir Parola Giriniz")
         } else {
-            onRegister()
+            onUpdateUser()
         }
     }
     return (
         <React.Fragment>
-            {state.status === 204 ? <p className="text text-center text-danger">Email Adresi Kullanımda</p> : ''}
             <InputForm placeholder={"İsim Giriniz..."}
                        type={"text"}
                        sublabel={true}
@@ -78,29 +90,19 @@ const RegisterForm = props => {
                        toplabel={true}
                        toplabeltext={"Email"}
             />
-            <InputForm placeholder={"ornek@example.com"}
-                       type={"password"}
-                       sublabel={true}
-                       sublabelclass={passwordValidate === true ? "valid-feedback" : 'invalid-feedback'}
-                       sublabeltext={passwordValidate === true ? '' : "Parolanız 8 Karakter İçermelidir"}
-                       {...bindpassword}
-                       forminputclass={passwordValidate === true ? "is-valid" : "is-invalid"}
-                       toplabel={true}
-                       toplabeltext={"Parola"}
-            />
             <div className="form-group mb-0 text-center">
                 <Button icon="fa fa-sign-in mr-1"
                         onClick={() => {
                             validateForm()
                         }}
-                        disabled={(emailValidate === true && passwordValidate === true) ? false : true} type={"button"}
+                        disabled={(emailValidate === true && nameValidate === true && surnameValidate == true) ? false : true}
+                        type={"button"}
                         buttontxt={"Kayıt Ol"} buttonclases={"btn-primary btn-block"}>
                 </Button>
-                {state.loading === true ? <Loading/> : null}
+                {loading === true ? <Loading/> : null}
             </div>
 
         </React.Fragment>
     )
 }
-export default RegisterForm
-
+export default EditUserForm

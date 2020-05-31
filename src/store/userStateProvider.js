@@ -26,20 +26,32 @@ const UserStore = ({children}) => {
             })
         }))
     }
+    const update = (data) => {
+        debugger
+        return new Promise(((resolve, reject) => {
+        /*    userDispatch({type: "UPDATEUSER", loading: true})*/
+            debugger
+            axios.post("http://127.0.0.1:3000/api/user/update", data, header()).then((response) => {
+                debugger
+            /*    userDispatch({type: "UPDATEUSER", loading: false, payload: data})*/
+                resolve(response)
+            }).catch((error) => {
+                debugger
+        /*        userDispatch({type: "UPDATEUSER", loading: false})*/
+                reject(error)
 
+            })
+        }))
+    }
     const updateProfileImg = (data) => {
         return new Promise(((resolve, reject) => {
             userDispatch({type: "UPDATEIMAGE", loading: true})
             axios.post("http://127.0.0.1:3000/api/user/updateImage", data, header('multipart/form-data')).then((res) => {
-                debugger
-
                 userDispatch({type: "UPDATEIMAGE", loading: false, payload: res.data.image})
                 resolve(res)
-                //response.data.image
             }).catch((error) => {
                 userDispatch({type: "UPDATEIMAGE", loading: false})
                 reject(error)
-                debugger
             })
         }))
     }
@@ -60,7 +72,8 @@ const UserStore = ({children}) => {
             userdispatch: userDispatch,
             show: show,
             fetchuser: fetch,
-            updateProfileImg: updateProfileImg
+            update: update,
+            updateUser: updateUser
 
         }}>
             {children}
