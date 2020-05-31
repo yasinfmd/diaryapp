@@ -7,12 +7,18 @@ import {msgBox} from "../utils/appmsgbox";
 import Loading from "../components/loading";
 import Flex from "../components/flex";
 import {ImageValidator} from "../utils/appimagevalidator";
+import {readFileBase64} from "../utils/appimageconverter";
+import Card from "../components/card";
+import UpdateImageCard from "../components/updateimagecard";
 
 export default function UserProfile() {
     let fileInput = useRef()
     const {user, updateUser} = useContext(GlobalContext)
     const [editedMode, setEditedMode] = useState(false)
+    const [editedImageMode, setEditedImageMode] = useState(false)
+    const [base64, setBase64] = useState(null)
     const {userstate, userdispatch, show, updateProfileImg} = useContext(UserContext)
+
     const [prof, setprof] = useState(null)
     useEffect(() => {
         show({id: user._id, fields: "fullname image email diaries"}).then((response) => {
@@ -22,7 +28,11 @@ export default function UserProfile() {
             msgBox("error", "Beklenmedik Bir Hata Gerçekleşti Lütfen Daha Sonra Tekrar Deneyin")
         })
     }, [])
-
+    const resetFileInput = () => {
+        fileInput.current.value = null
+        fileInput.current.files = null
+        setBase64(null)
+    }
     const uploadImage = () => {
         let formData = new FormData()
         formData.append('file', prof)
@@ -31,16 +41,17 @@ export default function UserProfile() {
             let newuser = {image: response.data.image, fullname: user.fullname, email: user.email, _id: user._id}
             localStorage.setItem("user", JSON.stringify(newuser))
             updateUser(newuser)
-            setEditedMode(!editedMode)
+            resetFileInput()
+            setEditedImageMode(false)
+            setEditedMode(false)
             msgBox("success", "Profil Resmi Başarıyl Güncellendi")
         }).catch((error) => {
-            msgBox("error", error.response.data)
+            msgBox("error", "Beklenmedik Bir Hata Gerçekleşti Lütfen Daha Sonra Tekrar Deneyin")
         })
 
     }
 
     const changeImage = () => {
-        debugger
         let result = true
         result = ImageValidator(fileInput.current.files)
         if (result === false) {
@@ -48,8 +59,14 @@ export default function UserProfile() {
         } else {
             const file = fileInput.current.files[0]
             setprof(file)
+            readFileBase64(file).then((res) => {
+                res.decode64 = res.base64
+                res.base64 = 'data:image/png;base64,' + res.base64
+                setBase64(res)
+            }).catch((error) => {
 
-            console.log("dosyam", prof)
+            })
+
         }
     }
     const renderUserProfile = () => {
@@ -59,6 +76,10 @@ export default function UserProfile() {
         } else {
             console.log("bakstate", userstate)
             renderitem = <ProfileCard src={userstate.user.image}
+                                      onImageEditClick={() => {
+                                          setEditedImageMode(!editedImageMode)
+                                      }
+                                      }
                                       onEditClick={() => {
                                           setEditedMode(!editedMode)
                                       }
@@ -68,26 +89,31 @@ export default function UserProfile() {
         }
         return renderitem
     }
-
     return (
         <React.Fragment>
             <PageSubHeader pagename={"Profilim"}/>
             {renderUserProfile()}
-            {editedMode === true ? (<Flex column={"col-lg-12"}>
-                <div className="row">
-                    <div className="col-12">
-                        <input className={"form-control"} type={"file"} ref={fileInput} name="myImage"
-                               onChange={() => {
-                                   changeImage()
-                               }}/>
-                        <button onClick={() => {
-                            uploadImage()
-                        }}>tıkla
-                        </button>
-                    </div>
-                </div>
+            {editedImageMode === true ? (<Flex column={"col-lg-12"}>
+                <Card>
+                    <UpdateImageCard base64={base64} inputref={fileInput}
+                                     onFileInputClick={() => {
+                                         fileInput.current.click();
+                                     }}
+                                     saveClick={() => {
+                                         uploadImage()
+                                     }}
+                                     save={base64 == null ? false : true}
+                                     cancel={base64 == null ? false : true}
+                                     cancelClick={() => {
+                                         resetFileInput()
+                                         setEditedMode(false)
+                                         setEditedImageMode(false)
+                                     }}
+                                     onChange={() => {
+                                         changeImage()
+                                     }}/>
+                </Card>
             </Flex>) : null}
-
         </React.Fragment>
 
     )

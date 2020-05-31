@@ -16,6 +16,10 @@ const ProfileCard = (props) => {
                         </div>
                         <div className="col-sm-4">
                             <div className="text-center mt-sm-0 mt-3 text-sm-right">
+                                <Button icon="fa fa-image "
+                                        type={"button"}
+                                        onClick={props.onImageEditClick}
+                                        buttontxt={"Profil Resmini Güncelle"} buttonclases={"btn-light btn-rounded mr-3"}/>
                                 <Button icon="fa fa-edit"
                                         type={"button"}
                                         onClick={props.onEditClick}
