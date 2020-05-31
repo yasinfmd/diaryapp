@@ -2,7 +2,6 @@ import React, {useContext, useEffect, useReducer, useState} from "react";
 import GlobalContext from "../context/globalContext"
 import {useHistory} from "react-router-dom";
 import {msgBox} from "../utils/appmsgbox";
-import AuthContext from "../context/authContext";
 
 const GlobalStore = ({children}) => {
     let history = useHistory();

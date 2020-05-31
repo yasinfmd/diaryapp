@@ -29,10 +29,9 @@ export default function UserProfile() {
         formData.append("userid", user._id)
         updateProfileImg(formData).then((response) => {
             debugger
-
-            user.image = response.data.image
-            localStorage.setItem("user", JSON.stringify(user))
-            updateUser(user)
+            let newuser = {image: response.data.image, fullname: user.fullname, email: user.email, _id: user._id}
+            localStorage.setItem("user", JSON.stringify(newuser))
+            updateUser(newuser)
         }).catch((error) => {
             msgBox("error", error.response.data)
         })
