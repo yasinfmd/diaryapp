@@ -28,10 +28,11 @@ export default function UserProfile() {
         formData.append('file', prof)
         formData.append("userid", user._id)
         updateProfileImg(formData).then((response) => {
-            debugger
             let newuser = {image: response.data.image, fullname: user.fullname, email: user.email, _id: user._id}
             localStorage.setItem("user", JSON.stringify(newuser))
             updateUser(newuser)
+            setEditedMode(!editedMode)
+            msgBox("success", "Profil Resmi Başarıyl Güncellendi")
         }).catch((error) => {
             msgBox("error", error.response.data)
         })
