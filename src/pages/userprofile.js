@@ -22,9 +22,7 @@ export default function UserProfile() {
     const [prof, setprof] = useState(null)
     useEffect(() => {
         show({id: user._id, fields: "fullname image name surname email diaries"}).then((response) => {
-            debugger
         }).catch((error) => {
-            debugger
             msgBox("error", "Beklenmedik Bir Hata Gerçekleşti Lütfen Daha Sonra Tekrar Deneyin")
         })
     }, [])
@@ -118,7 +116,7 @@ export default function UserProfile() {
             </Flex>) : null}
             {editedMode === true ? <Flex column={"col-12"}>
                 <Card>
-                    <EditUserForm name={userstate.user.name} surname={userstate.user.surname}
+                    <EditUserForm name={userstate.user.name} setMode={setEditedMode} surname={userstate.user.surname}
                                   email={userstate.user.email}/>
                 </Card>
             </Flex> : null

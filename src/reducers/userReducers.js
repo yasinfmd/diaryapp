@@ -6,13 +6,28 @@ export default function userReducers(state, action) {
                 loading: action.loading,
                 user: action.user
             }
+        case "UPDATEUSER":
+            debugger
+            let updateuser;
+            if (action.loading == false && action.payload) {
+                updateuser = state.user
+                updateuser.name = action.payload.name
+                updateuser.surname = action.payload.surname
+                updateuser.fullname = action.payload.name + " " + action.payload.surname
+                updateuser.email = action.payload.email
+            }
 
-        case "UPDATEIMAGE":
-            const user = state.user
-            user.image = action.payload
             return {
                 loading: action.loading,
-                user: user
+                user: updateuser?updateuser:state.user
+            }
+
+        case "UPDATEIMAGE":
+            const updateserimage = state.user
+            updateserimage.image = action.payload
+            return {
+                loading: action.loading,
+                user: updateserimage
             }
         default:
             return state

@@ -29,15 +29,15 @@ const UserStore = ({children}) => {
     const update = (data) => {
         debugger
         return new Promise(((resolve, reject) => {
-        /*    userDispatch({type: "UPDATEUSER", loading: true})*/
+            userDispatch({type: "UPDATEUSER", loading: true})
             debugger
             axios.post("http://127.0.0.1:3000/api/user/update", data, header()).then((response) => {
                 debugger
-            /*    userDispatch({type: "UPDATEUSER", loading: false, payload: data})*/
+               userDispatch({type: "UPDATEUSER", loading: false, payload: data})
                 resolve(response)
             }).catch((error) => {
                 debugger
-        /*        userDispatch({type: "UPDATEUSER", loading: false})*/
+              userDispatch({type: "UPDATEUSER", loading: false})
                 reject(error)
 
             })

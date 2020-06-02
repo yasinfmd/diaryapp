@@ -11,7 +11,7 @@ import {urlParse} from "../utils/appparser";
 
 const EditUserForm = (props) => {
     const [loading, setLoading] = useState(false)
-    const {user} = useContext(GlobalContext)
+    const {user,updateUser} = useContext(GlobalContext)
     const [email, bindemail, resetemail, emailValidate] = useInput(props.email, emailValidator, true)
     const [name, bindname, resetname, nameValidate] = useInput(props.name, nameValidator, true)
     const [surname, bindsurname, resetsurname, surnameValidate] = useInput(props.surname, surnameValidator, true)
@@ -27,17 +27,18 @@ const EditUserForm = (props) => {
         if (iseq) {
             msgBox("info", "Lütfen Alanları Güncelleyiniz")
         } else {
-            debugger
             const where = urlParse.parse("_id=" + user._id)
             update({urlparse: where, name: name, surname: surname, email: email}).then((response) => {
-                debugger
+                props.setMode(false)
+                let newuser = {image: user.image, fullname: name+" "+surname, email: email, _id: user._id}
+                localStorage.setItem("user", JSON.stringify(newuser))
+                updateUser(newuser)
+                msgBox("success", "Güncelleme İşlemi Başarıyla Tamamlandı")
                 resetForm()
             }).catch((error) => {
                 msgBox("error", "Güncelleme İşlemi Sırasında Hata Gerçekleşti")
             })
-            /*update*/
         }
-        //resetForm()
     }
 
     const sameusercontrol = () => {
