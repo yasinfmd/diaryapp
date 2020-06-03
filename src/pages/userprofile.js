@@ -11,6 +11,7 @@ import {readFileBase64} from "../utils/appimageconverter";
 import Card from "../components/card";
 import UpdateImageCard from "../components/updateimagecard";
 import EditUserForm from "../components/edituserform";
+import appmsg from "../utils/appmsg";
 
 export default function UserProfile() {
     let fileInput = useRef()
@@ -23,7 +24,7 @@ export default function UserProfile() {
     useEffect(() => {
         show({id: user._id, fields: "fullname image name surname email diaries"}).then((response) => {
         }).catch((error) => {
-            msgBox("error", "Beklenmedik Bir Hata Gerçekleşti Lütfen Daha Sonra Tekrar Deneyin")
+            msgBox("error", appmsg.errormsg)
         })
     }, [])
     const resetFileInput = () => {
@@ -44,7 +45,7 @@ export default function UserProfile() {
             setEditedMode(false)
             msgBox("success", "Profil Resmi Başarıyl Güncellendi")
         }).catch((error) => {
-            msgBox("error", "Beklenmedik Bir Hata Gerçekleşti Lütfen Daha Sonra Tekrar Deneyin")
+            msgBox("error", appmsg.errormsg)
         })
 
     }

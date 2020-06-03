@@ -20,9 +20,9 @@ export default function UserDiar() {
     const {fetchUserGroupedDiary, fetchdiary, state, dispatch} = useContext(DiaryContext)
     useEffect(() => {
         fetchUserGroupedDiary({userId: user._id}).then((response) => {
-            console.log("cevap", response)
+            console.log("result", response)
         }).catch((error) => {
-            msgBox("error", "Beklenmedik Bir Hata Gerçekleşti Lütfen Daha Sonra Tekrar Deneyin")
+            msgBox("error", appmsg.errormsg)
         })
     }, [])
 

@@ -15,7 +15,6 @@ const DiaryStore = ({children}) => {
         groupeduserdiary: []
     }
     const [diaryState, diaryDispatch] = useReducer(diaryReducers, initialState)
-
     const fetchUserGroupedDiary = (data) => {
         let deferred = new Promise(((resolve, reject) => {
             diaryDispatch({type: "SETGROUPEDDIARY", loading: true})
@@ -43,9 +42,7 @@ const DiaryStore = ({children}) => {
 
     const fetch = (data) => {
         let deferred = new Promise(((resolve, reject) => {
-            debugger
             diaryDispatch({type: "SET", loading: true})
-            debugger
             axios.post("http://127.0.0.1:3000/api/user/" + data.userid + "/dair", data, header()).then((res) => {
                 debugger
                 console.log("gelen", res)
@@ -66,10 +63,51 @@ const DiaryStore = ({children}) => {
         }))
         return deferred
     }
+    const deleteDiar = (data) => {
+        let deferred = new Promise(((resolve, reject) => {
+            diaryDispatch({type: "DELETE", loading: true,payload:[]})
+            axios.post("http://127.0.0.1:3000/api/dair/delete", data, header()).then((response) => {
+                let deletedDiary;
+                if (diaryState.diary.length > 1) {
+                    deletedDiary = diaryState.diary.filter((diaryItem) => {
+                        return diaryItem._id != data.id
+                    })
+                } else {
+                    deletedDiary = []
+                }
+                diaryDispatch({type: "DELETE", loading: false, payload: deletedDiary})
+
+                resolve(response)
+
+            }).catch((error) => {
+                debugger
+                diaryDispatch({type: "DELETE", loading: false,payload:[]})
+                reject(error)
+            })
+        }))
+        return deferred
+    }
+    const addImages = (formData) => {
+        let deferred = new Promise(((resolve, reject) => {
+            axios.post("http://127.0.0.1:3000/api/image/create", formData, header('multipart/form-data')).then((response) => {
+                resolve(response)
+            }).catch((error) => {
+                if (error.response.status === 401) {
+                    history.replace("/login")
+                    localStorage.clear()
+                    msgBox("info", "Oturumunuzun Süresi Dolduğu İçin Giriş Sayfasına Yönlendiriliyorsunuz")
+                    return
+                }
+                reject(error)
+            })
+        }))
+        return deferred
+    }
 
     const create = (data) => {
         let deferred = new Promise(((resolve, reject) => {
             axios.post("http://127.0.0.1:3000/api/dair/create", data, header()).then((res) => {
+                debugger
                 if (res.status === 200) {
                     diaryDispatch({type: "CREATE", loading: false, payload: [...diaryState.diary, res.data]})
                 } else if (res.status === 204) {
@@ -95,8 +133,10 @@ const DiaryStore = ({children}) => {
             state: diaryState,
             dispatch: diaryDispatch,
             creatediary: create,
+            addImages: addImages,
             fetchdiary: fetch,
-            fetchUserGroupedDiary: fetchUserGroupedDiary
+            fetchUserGroupedDiary: fetchUserGroupedDiary,
+            deleteDiar: deleteDiar
         }}>
             {children}
         </DiaryContext.Provider>

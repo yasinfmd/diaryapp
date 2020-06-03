@@ -8,6 +8,7 @@ import {msgBox} from "../utils/appmsgbox";
 import UserContext from "../context/userContext";
 import GlobalContext from "../context/globalContext";
 import {urlParse} from "../utils/appparser";
+import appmsg from "../utils/appmsg";
 
 const EditUserForm = (props) => {
     const [loading, setLoading] = useState(false)
@@ -36,7 +37,7 @@ const EditUserForm = (props) => {
                 msgBox("success", "Güncelleme İşlemi Başarıyla Tamamlandı")
                 resetForm()
             }).catch((error) => {
-                msgBox("error", "Güncelleme İşlemi Sırasında Hata Gerçekleşti")
+                msgBox("error", appmsg.errormsg)
             })
         }
     }

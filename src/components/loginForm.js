@@ -8,6 +8,7 @@ import AuthContext from "../context/authContext";
 import {useHistory} from "react-router-dom";
 import GlobalContext from "../context/globalContext";
 import parseJwt from "../utils/apptokendecoder";
+import appmsg from "../utils/appmsg";
 
 const LoginForm = props => {
     const [email, bindemail, resetemail, emailValidate] = useInput('', emailValidator)
@@ -33,7 +34,7 @@ const LoginForm = props => {
                 msgBox("warning", "Kullanıcı Adı Veya Parola Hatalı")
             }
         }).catch((error) => {
-            msgBox("error", "Beklenmedik Bir Hata Gerçekleti Lütfen Daha Sonra Tekrar Deneyin")
+            msgBox("error", appmsg.errormsg)
         })
     }
     const validateForm = async () => {

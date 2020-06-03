@@ -7,6 +7,7 @@ import {msgBox} from "../utils/appmsgbox"
 import AuthContext from "../context/authContext";
 import {useHistory, useParams} from "react-router-dom";
 import Loading from "./loading";
+import appmsg from "../utils/appmsg";
 
 const PasswordResetForm = props => {
     const [loading, setLoading] = useState(false)
@@ -33,7 +34,7 @@ const PasswordResetForm = props => {
             history.replace("/login")
             setLoading(false)
         }).catch((error) => {
-            msgBox("error", "Beklenmedik Bir Hata Gerçekleşti Lütfen Daha Sonra Tekrar Deneyin")
+            msgBox("error", appmsg.errormsg)
         })
     }
     const validateForm = () => {

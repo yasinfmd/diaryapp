@@ -11,17 +11,18 @@ import GlobalContext from "../context/globalContext";
 import {urlParse} from "../utils/appparser";
 import PageSubHeader from "../components/pagesubheader";
 import PageTitleBox from "../components/pagetitlebox";
+import Button from "../components/Button";
 
 const Dashboard = (props) => {
     //userid ekle
     const {isAuth, user} = useContext(GlobalContext)
-    const {fetchdiary, state, dispatch} = useContext(DiaryContext)
+    const {fetchdiary, state, dispatch, deleteDiar} = useContext(DiaryContext)
     useEffect(() => {
         const firstDay = moment().startOf('month').format('YYYY-MM-DD');
-        const lastDay   = moment().endOf('month').format('YYYY-MM-DD HH:mm');
-       /* const date = new Date();
-        const firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
-        const lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);*/
+        const lastDay = moment().endOf('month').format('YYYY-MM-DD HH:mm');
+        /* const date = new Date();
+         const firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
+         const lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);*/
         const where = urlParse.parse("dairdate>" + firstDay + "&dairdate<" + lastDay)
 
 
@@ -35,6 +36,16 @@ const Dashboard = (props) => {
             msgBox("error", appmsg.errormsg)
         })
     }, [])
+
+    const deleteDiarItem = (diaryItem, index) => {
+        const where = urlParse.parse("_id=" + diaryItem._id)
+        deleteDiar({urlparse: where, index, id: diaryItem._id}).then((response) => {
+            msgBox("success", "Günlük Başarıyla Silindi")
+        }).catch((error) => {
+            msgBox("error", appmsg.errormsg)
+        })
+        debugger
+    }
     const renderDiaryItem = () => {
         if (state.diary.length > 0) {
             return state.diary.map((diaryItem, index) => {
@@ -43,16 +54,23 @@ const Dashboard = (props) => {
                         <Card
                             key={index}
                             sub={
-                                <div className="float-right">
-                                    <p className="text text-center">
-                                        <Link to={"/diar-detail/" + diaryItem._id}>
-                                            {diaryItem.content.length > 300 ? "   Tamamını oku .." : 'Detay'}
-
-                                        </Link>
-                                        <i className="fa fa-book text-success pl-3"></i>
-                                    </p>
-
-                                </div>
+                                <React.Fragment>
+                                    <div className="float-right">
+                                        <p className="text text-center">
+                                            <Link to={"/diar-detail/" + diaryItem._id}
+                                                  className={"btn btn-sm btn-outline-info btn-rounded"} role={"button"}>
+                                                <i className={"pr-1 fa fa-home"}></i>
+                                                {diaryItem.content.length > 300 ? "   Tamamını oku .." : 'Detay'}
+                                            </Link>
+                                            <Button type={"button"} buttontxt={"Sil"}
+                                                    onClick={() => {
+                                                        deleteDiarItem(diaryItem, index)
+                                                    }}
+                                                    buttonclases={" btn-sm btn-outline-danger ml-3 btn-rounded"}
+                                                    icon={"pr-2 fa fa-save"}/>
+                                        </p>
+                                    </div>
+                                </React.Fragment>
                             }
                             cardclass={"widget-flat border-primary border"}
                             cardtext={diaryItem.content.slice(0, 300) + " ..."}

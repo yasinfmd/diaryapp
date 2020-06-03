@@ -10,6 +10,7 @@ import GlobalContext from "../context/globalContext";
 import {urlParse} from "../utils/appparser";
 import md5 from "md5"
 import Loading from "./loading";
+import appmsg from "../utils/appmsg";
 
 const ChangePasswordForm = (props) => {
     const [loading, setLoading] = useState(false)
@@ -34,7 +35,7 @@ const ChangePasswordForm = (props) => {
                 updatePassword()
             }
         }).catch((error) => {
-            msgBox("error", "Beklenmedik Bir Hata Gerçekleşti Lütfen Daha Sonra Tekrar Deneyin")
+            msgBox("error", appmsg.errormsg)
         })
     }
 
@@ -46,7 +47,7 @@ const ChangePasswordForm = (props) => {
             resetForm()
         }).catch((error) => {
             setLoading(false)
-            msgBox("error", "Beklenmedik Bir Hata Gerçekleşti Lütfen Daha Sonra Tekrar Deneyin")
+            msgBox("error", appmsg.errormsg)
         })
     }
 

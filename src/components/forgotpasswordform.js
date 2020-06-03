@@ -6,6 +6,7 @@ import useInput from "../customHooks/useInput";
 import {msgBox} from "../utils/appmsgbox"
 import AuthContext from "../context/authContext";
 import {useHistory} from "react-router-dom";
+import appmsg from "../utils/appmsg";
 
 const ForgotPasswordForm = props => {
     const [email, bindemail, resetemail, emailValidate] = useInput('', emailValidator)
@@ -21,7 +22,7 @@ const ForgotPasswordForm = props => {
             if (error.response.status === 404) {
                 msgBox("info", "Email Adresi Bulunumadı")
             } else if (error.response.status === 500) {
-                msgBox("error", "Beklenmedik Bir Hata Gerçekleşti Lütfen Daha Sonra Tekrar Deneyin")
+                msgBox("error", appmsg.errormsg)
             }
         })
     }
