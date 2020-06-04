@@ -72,6 +72,8 @@ const DiaryStore = ({children}) => {
                     if (diaryState.groupeduserdiary[data.groupedindex].count === 1) {
                         groupedDiary = diaryState.groupeduserdiary
                         groupedDiary.splice(data.groupedindex, 1)
+                    } else {
+                        groupedDiary = diaryState.groupeduserdiary
                     }
                 }
                 let deletedDiary;
@@ -85,6 +87,12 @@ const DiaryStore = ({children}) => {
                 diaryDispatch({type: "DELETE", loading: false, payload: deletedDiary, groupeduser: groupedDiary})
                 resolve(response)
             }).catch((error) => {
+                if (error.response.status === 401) {
+                    history.replace("/login")
+                    localStorage.clear()
+                    msgBox("info", "Oturumunuzun Süresi Dolduğu İçin Giriş Sayfasına Yönlendiriliyorsunuz")
+                    return
+                }
                 diaryDispatch({type: "DELETE", loading: false, payload: []})
                 reject(error)
             })
