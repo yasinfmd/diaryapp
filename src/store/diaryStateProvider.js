@@ -65,8 +65,15 @@ const DiaryStore = ({children}) => {
     }
     const deleteDiar = (data) => {
         let deferred = new Promise(((resolve, reject) => {
-            diaryDispatch({type: "DELETE", loading: true,payload:[]})
+            diaryDispatch({type: "DELETE", loading: true, payload: []})
             axios.post("http://127.0.0.1:3000/api/dair/delete", data, header()).then((response) => {
+                let groupedDiary = []
+                if (data.groupedindex !== undefined || data.groupedindex !== null) {
+                    if (diaryState.groupeduserdiary[data.groupedindex].count === 1) {
+                        groupedDiary = diaryState.groupeduserdiary
+                        groupedDiary.splice(data.groupedindex, 1)
+                    }
+                }
                 let deletedDiary;
                 if (diaryState.diary.length > 1) {
                     deletedDiary = diaryState.diary.filter((diaryItem) => {
@@ -75,13 +82,10 @@ const DiaryStore = ({children}) => {
                 } else {
                     deletedDiary = []
                 }
-                diaryDispatch({type: "DELETE", loading: false, payload: deletedDiary})
-
+                diaryDispatch({type: "DELETE", loading: false, payload: deletedDiary, groupeduser: groupedDiary})
                 resolve(response)
-
             }).catch((error) => {
-                debugger
-                diaryDispatch({type: "DELETE", loading: false,payload:[]})
+                diaryDispatch({type: "DELETE", loading: false, payload: []})
                 reject(error)
             })
         }))

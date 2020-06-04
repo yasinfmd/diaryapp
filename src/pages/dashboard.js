@@ -44,7 +44,6 @@ const Dashboard = (props) => {
         }).catch((error) => {
             msgBox("error", appmsg.errormsg)
         })
-        debugger
     }
     const renderDiaryItem = () => {
         if (state.diary.length > 0) {

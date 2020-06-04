@@ -4,7 +4,7 @@ export default function diaryReducers(state, action) {
             return {
                 loading: action.loading,
                 diary: action.payload,
-                groupeduserdiary: state.groupeduserdiary
+                groupeduserdiary: state.groupeduserdiary.reverse()
             }
         case "SETGROUPEDDIARY":
             return {
@@ -16,18 +16,14 @@ export default function diaryReducers(state, action) {
             return {
                 loading: action.loading,
                 diary: action.payload,
-                groupeduserdiary: state.groupeduserdiary
+                groupeduserdiary: state.groupeduserdiary.reverse()
             }
 
         case "DELETE":
-
-            //gruplanmışa da bak
-
-
             return {
                 loading: action.loading,
                 diary: action.payload,
-                groupeduserdiary: state.groupeduserdiary
+                groupeduserdiary: action.groupeduser ? action.groupeduser : state.groupeduserdiary.reverse()
             }
 
         default:
