@@ -8,7 +8,9 @@ export const passwordValidator = (password) => {
 }
 
 export const nameValidator = (name) => {
-    if (name.trim().length < 3) return false
+    const regex = /\d+/g;
+    let matches = name.match(regex);
+    if (name.trim().length < 3 || matches != null) return false
     return true
 }
 
@@ -23,6 +25,8 @@ export const diarContentValidator = (content) => {
 }
 
 export const surnameValidator = (surname) => {
-    if (surname.trim().length < 2) return false
+    const regex = /\d+/g;
+    let matches = surname.match(regex);
+    if (surname.trim().length < 2 || matches != null) return false
     return true
 }

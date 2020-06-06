@@ -10,63 +10,69 @@ import GlobalContext from "../context/globalContext";
 import parseJwt from "../utils/apptokendecoder";
 import appmsg from "../utils/appmsg";
 
-const LoginForm = props => {
+const LoginForm = () => {
     const [email, bindemail, resetemail, emailValidate] = useInput('', emailValidator)
     const [password, bindpassword, resetpassword, passwordValidate] = useInput('', passwordValidator)
     const {login} = useContext(AuthContext)
     const {updateUser, updateAuth, setExpiresin} = useContext(GlobalContext)
     let history = useHistory();
     const onLogin = () => {
-        login({email, password}).then((response) => {
-            if (response.status === 200) {
-                const parsedToken = parseJwt(response.data.token)
-                const exp = parsedToken.exp
-                const iat = parsedToken.iat
-                const expseconds = exp - iat
-                setExpiresin(+expseconds * 1000)
-                localStorage.setItem("expirationDate", new Date().getTime() + expseconds * 1000)
-                localStorage.setItem("token", JSON.stringify(response.data.token))
-                localStorage.setItem("user", JSON.stringify(response.data.user))
-                updateAuth(true)
-                updateUser(response.data.user)
-                history.push('/')
-            } else if (response.status === 204) {
-                msgBox("warning", "Kullanıcı Adı Veya Parola Hatalı")
-            }
-        }).catch((error) => {
-            msgBox("error", appmsg.errormsg)
-        })
+       try{
+           login({email, password}).then((response) => {
+               if (response.status === 200) {
+                   const parsedToken = parseJwt(response.data.token)
+                   const exp = parsedToken.exp
+                   const iat = parsedToken.iat
+                   const expseconds = exp - iat
+                   setExpiresin(+expseconds * 1000)
+                   localStorage.setItem("expirationDate", new Date().getTime() + expseconds * 1000)
+                   localStorage.setItem("token", JSON.stringify(response.data.token))
+                   localStorage.setItem("user", JSON.stringify(response.data.user))
+                   updateAuth(true)
+                   updateUser(response.data.user)
+                   history.push('/')
+               } else if (response.status === 204) {
+                   msgBox("warning", appmsg.loginform.usernameorpassworderror)
+               }
+           })
+       }catch (error) {
+           msgBox("error", appmsg.errormsg)
+       }
     }
     const validateForm = async () => {
-        if (!emailValidator(email)) {
-            msgBox("error", "Lütfen Geçerli Bir Email Adresi Giriniz")
-        } else if (!passwordValidator(password)) {
-            msgBox("error", "Lütfen Geçerli Bir Parola Giriniz")
-        } else {
-            onLogin()
+        try{
+            if (!emailValidator(email)) {
+                msgBox("error", appmsg.loginform.email)
+            } else if (!passwordValidator(password)) {
+                msgBox("error", appmsg.loginform.password)
+            } else {
+                onLogin()
+            }
+        }catch (error) {
+            msgBox("error", appmsg.errormsg)
         }
     }
     return (
         <React.Fragment>
-            <InputForm placeholder={"ornek@example.com"}
+            <InputForm placeholder={appmsg.loginform.emailplaceholder}
                        type={"email"}
                        sublabel={true}
                        sublabelclass={emailValidate === true ? "valid-feedback" : 'invalid-feedback'}
-                       sublabeltext={emailValidate === true ? '' : "Email Adresi Geçersiz"}
+                       sublabeltext={emailValidate === true ? '' : appmsg.loginform.emailerror}
                        {...bindemail}
                        forminputclass={emailValidate === true ? "is-valid" : "is-invalid"}
                        toplabel={true}
-                       toplabeltext={"Email"}
+                       toplabeltext={appmsg.loginform.emaillabel}
             />
-            <InputForm placeholder={"Parolanız..."}
+            <InputForm placeholder={appmsg.loginform.passwordplaceholder}
                        type={"password"}
                        sublabel={true}
                        sublabelclass={passwordValidate === true ? "valid-feedback" : 'invalid-feedback'}
-                       sublabeltext={passwordValidate === true ? '' : "Parolanız 8 Karakter İçermelidir"}
+                       sublabeltext={passwordValidate === true ? '' : appmsg.loginform.passworderror}
                        {...bindpassword}
                        forminputclass={passwordValidate === true ? "is-valid" : "is-invalid"}
                        toplabel={true}
-                       toplabeltext={"Parola"}
+                       toplabeltext={appmsg.loginform.passwordlabel}
             />
             <div className="form-group mb-0 text-center">
                 <Button icon="fa fa-sign-in mr-1"
@@ -74,8 +80,7 @@ const LoginForm = props => {
                             validateForm()
                         }}
                         disabled={(emailValidate === true && passwordValidate === true) ? false : true} type={"button"}
-                        buttontxt={"Giriş Yap"} buttonclases={"btn-primary btn-block"}/>
-
+                        buttontxt={appmsg.loginform.login} buttonclases={"btn-primary btn-block"}/>
             </div>
         </React.Fragment>
     )

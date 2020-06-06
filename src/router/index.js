@@ -12,6 +12,7 @@ import CreateDiar from "../pages/creatediar"
 import UserDiar from "../pages/userdiar";
 import ChangePassword from "../pages/changepassword";
 import UserProfile from "../pages/userprofile";
+import DiarDetail from "../pages/diardetail";
 
 import AuthStore from "../store/authStateProvider"
 import DiaryStore from "../store/diaryStateProvider";
@@ -27,6 +28,10 @@ export default function Routers() {
                 <AppRoute path="/create-diar" exact
                           layout={MainLayout}
                           component={CreateDiar}
+                          routeProtection={true}/>
+                <AppRoute path="/diar-detail/:diarId" exact
+                          layout={MainLayout}
+                          component={DiarDetail}
                           routeProtection={true}/>
             </DiaryStore>
             <AuthStore>

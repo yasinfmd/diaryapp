@@ -5,6 +5,7 @@ import DiaryContext from "../context/diaryContext";
 import header from "../utils/axiosheader";
 import {useHistory} from "react-router-dom";
 import {msgBox} from "../utils/appmsgbox";
+import handleError from "../utils/apphttperror";
 
 
 const DiaryStore = ({children}) => {
@@ -12,7 +13,8 @@ const DiaryStore = ({children}) => {
     const initialState = {
         diary: [],
         loading: false,
-        groupeduserdiary: []
+        groupeduserdiary: [],
+        showdiar: {}
     }
     const [diaryState, diaryDispatch] = useReducer(diaryReducers, initialState)
     const fetchUserGroupedDiary = (data) => {
@@ -27,13 +29,8 @@ const DiaryStore = ({children}) => {
                 }
                 resolve(res)
             }).catch((err) => {
-                if (err.response.status === 401) {
-                    history.replace("/login")
-                    localStorage.clear()
-                    msgBox("info", "Oturumunuzun Süresi Dolduğu İçin Giriş Sayfasına Yönlendiriliyorsunuz")
-                    return
-                }
-                diaryDispatch({type: "SETGROUPEDDIARY", loading: false})
+                handleError(err)
+                diaryDispatch({type: "SETGROUPEDDIARY", loading: false, error: err})
                 reject(err)
             })
         }))
@@ -51,13 +48,8 @@ const DiaryStore = ({children}) => {
                 }
                 resolve(res)
             }).catch((err) => {
-                if (err.response.status === 401) {
-                    history.replace("/login")
-                    localStorage.clear()
-                    msgBox("info", "Oturumunuzun Süresi Dolduğu İçin Giriş Sayfasına Yönlendiriliyorsunuz")
-                    return
-                }
-                diaryDispatch({type: "SET", loading: false})
+                handleError(err)
+                diaryDispatch({type: "SET", loading: false, error: err})
                 reject(err)
             })
         }))
@@ -86,15 +78,10 @@ const DiaryStore = ({children}) => {
                 }
                 diaryDispatch({type: "DELETE", loading: false, payload: deletedDiary, groupeduser: groupedDiary})
                 resolve(response)
-            }).catch((error) => {
-                if (error.response.status === 401) {
-                    history.replace("/login")
-                    localStorage.clear()
-                    msgBox("info", "Oturumunuzun Süresi Dolduğu İçin Giriş Sayfasına Yönlendiriliyorsunuz")
-                    return
-                }
-                diaryDispatch({type: "DELETE", loading: false, payload: []})
-                reject(error)
+            }).catch((err) => {
+                handleError(err)
+                diaryDispatch({type: "DELETE", loading: false, payload: [], error: err})
+                reject(err)
             })
         }))
         return deferred
@@ -103,14 +90,29 @@ const DiaryStore = ({children}) => {
         let deferred = new Promise(((resolve, reject) => {
             axios.post("http://127.0.0.1:3000/api/image/create", formData, header('multipart/form-data')).then((response) => {
                 resolve(response)
-            }).catch((error) => {
-                if (error.response.status === 401) {
-                    history.replace("/login")
-                    localStorage.clear()
-                    msgBox("info", "Oturumunuzun Süresi Dolduğu İçin Giriş Sayfasına Yönlendiriliyorsunuz")
-                    return
+            }).catch((err) => {
+                handleError(err)
+                reject(err)
+            })
+        }))
+        return deferred
+    }
+    const show = (data) => {
+        let deferred = new Promise(((resolve, reject) => {
+            axios.post("http://127.0.0.1:3000/api/dair/" + data.dairid, data, header()).then((res) => {
+                if (res.status === 200) {
+                    diaryDispatch({type: "SHOW", loading: false, payload: res.data})
                 }
-                reject(error)
+                resolve(res)
+            }).catch((err) => {
+                if (err.response.status === 404) {
+                    msgBox("info", "Günlük Bulunamadı")
+                    history.replace("/")
+                }else{
+                    handleError(err)
+                }
+                diaryDispatch({type: "SHOW", loading: false, error: err})
+                reject(err)
             })
         }))
         return deferred
@@ -127,12 +129,7 @@ const DiaryStore = ({children}) => {
                 }
                 resolve(res)
             }).catch((err) => {
-                if (err.response.status === 401) {
-                    history.replace("/login")
-                    localStorage.clear()
-                    msgBox("info", "Oturumunuzun Süresi Dolduğu İçin Giriş Sayfasına Yönlendiriliyorsunuz")
-                    return
-                }
+                handleError(err)
                 diaryDispatch({type: "CREATE", loading: false})
                 reject(err)
             })
@@ -148,7 +145,8 @@ const DiaryStore = ({children}) => {
             addImages: addImages,
             fetchdiary: fetch,
             fetchUserGroupedDiary: fetchUserGroupedDiary,
-            deleteDiar: deleteDiar
+            deleteDiar: deleteDiar,
+            show: show
         }}>
             {children}
         </DiaryContext.Provider>

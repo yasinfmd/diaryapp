@@ -8,7 +8,7 @@ import AuthContext from "../context/authContext";
 import {useHistory} from "react-router-dom";
 import appmsg from "../utils/appmsg";
 
-const ForgotPasswordForm = props => {
+const ForgotPasswordForm = () => {
     const [email, bindemail, resetemail, emailValidate] = useInput('', emailValidator)
     const {forgotpassword} = useContext(AuthContext)
 
@@ -16,34 +16,28 @@ const ForgotPasswordForm = props => {
 
     const forgotpass = () => {
         forgotpassword({email: email}).then((response) => {
-            msgBox("success", "Parola Sıfırlama Bağlantısı Email Adresine Gönderildi")
+            msgBox("success", appmsg.forgotpassword.resetpasswordlinksend)
             history.push("/login")
-        }).catch((error) => {
-            if (error.response.status === 404) {
-                msgBox("info", "Email Adresi Bulunumadı")
-            } else if (error.response.status === 500) {
-                msgBox("error", appmsg.errormsg)
-            }
         })
     }
     const validateForm = () => {
         if (!emailValidator(email)) {
-            msgBox("error", "Lütfen Geçerli Bir Email Adresi Giriniz")
+            msgBox("error", appmsg.forgotpassword.email)
         } else {
             forgotpass()
         }
     }
     return (
         <React.Fragment>
-            <InputForm placeholder={"ornek@example.com"}
+            <InputForm placeholder={appmsg.forgotpassword.emailplaceholder}
                        type={"email"}
                        sublabel={true}
                        sublabelclass={emailValidate === true ? "valid-feedback" : 'invalid-feedback'}
-                       sublabeltext={emailValidate === true ? '' : "Email Adresi Geçersiz"}
+                       sublabeltext={emailValidate === true ? '' : appmsg.forgotpassword.emailerror}
                        {...bindemail}
                        forminputclass={emailValidate === true ? "is-valid" : "is-invalid"}
                        toplabel={true}
-                       toplabeltext={"Email"}
+                       toplabeltext={appmsg.forgotpassword.emaillabel}
             />
 
             <div className="form-group mb-0 text-center">
@@ -52,7 +46,7 @@ const ForgotPasswordForm = props => {
                             validateForm()
                         }}
                         disabled={(emailValidate === true) ? false : true} type={"button"}
-                        buttontxt={"Parolamı Sıfırla"} buttonclases={"btn-primary btn-block"}/>
+                        buttontxt={appmsg.forgotpassword.resetpassword} buttonclases={"btn-primary btn-block"}/>
 
             </div>
         </React.Fragment>

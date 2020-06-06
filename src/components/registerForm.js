@@ -7,8 +7,9 @@ import AuthContext from "../context/authContext";
 import Loading from "./loading";
 import useInput from "../customHooks/useInput";
 import {msgBox} from "../utils/appmsgbox";
+import appmsg from "../utils/appmsg";
 
-const RegisterForm = props => {
+const RegisterForm = () => {
     let history = useHistory();
     const [email, bindemail, resetemail, emailValidate] = useInput('', emailValidator)
     const [password, bindpassword, resetpassword, passwordValidate] = useInput('', passwordValidator)
@@ -16,77 +17,82 @@ const RegisterForm = props => {
     const [surname, bindsurname, resetsurname, surnameValidate] = useInput('', surnameValidator)
     const {state, dispatch, register} = useContext(AuthContext)
     const onRegister = async () => {
-        dispatch({type: "REGISTER", registermsg: "", loading: true})
-        const result = await register({
-            name,
-            surname,
-            password,
-            email
-        })
-        if (result.status === 200) {
-            history.push('/login')
-            resetemail()
-            resetname()
-            resetpassword()
-            resetsurname()
+        try {
+            dispatch({type: "REGISTER", registermsg: "", loading: true})
+            const result = await register({
+                name,
+                surname,
+                password,
+                email
+            })
+            if (result.status === 200) {
+                history.push('/login')
+            }
+        } catch (error) {
+            msgBox("error", appmsg.errormsg)
         }
     }
 
     const validateForm = () => {
-        if (!nameValidator(name)) {
-            msgBox("error", "Lütfen Geçerli Bir Ad Giriniz")
-        } else if (!surnameValidator(surname)) {
-            msgBox("error", "Lütfen Geçerli Bir SoyAd Giriniz")
-        } else if (!emailValidator(email)) {
-            msgBox("error", "Lütfen Geçerli Bir Email Giriniz")
-        } else if (!passwordValidator(password)) {
-            msgBox("error", "Lütfen Geçerli Bir Parola Giriniz")
-        } else {
-            onRegister()
+        try {
+            if (!nameValidator(name)) {
+                msgBox("error", appmsg.registerform.name)
+            } else if (!surnameValidator(surname)) {
+                msgBox("error", appmsg.registerform.surname)
+            } else if (!emailValidator(email)) {
+                msgBox("error", appmsg.registerform.email)
+            } else if (!passwordValidator(password)) {
+                msgBox("error", appmsg.registerform.password)
+            } else {
+                onRegister()
+            }
+        } catch (error) {
+            msgBox("error", appmsg.errormsg)
         }
     }
     return (
         <React.Fragment>
-            {state.status === 204 ? <p className="text text-center text-danger">Email Adresi Kullanımda</p> : ''}
-            <InputForm placeholder={"İsim Giriniz..."}
+            {state.status === 204 ?
+                <p className="text text-center text-danger">{appmsg.registerform.emailexist}</p> : ''}
+            <InputForm placeholder={appmsg.registerform.nameplaceholder}
                        type={"text"}
                        sublabel={true}
                        sublabelclass={nameValidate === true ? "valid-feedback" : 'invalid-feedback'}
-                       sublabeltext={nameValidate === true ? '' : "İsim Geçersiz"}
+                       sublabeltext={nameValidate === true ? '' : appmsg.registerform.nameerror}
                        {...bindname}
                        forminputclass={nameValidate === true ? "is-valid" : "is-invalid"}
                        toplabel={true}
-                       toplabeltext={"Adınız"}
+                       toplabeltext={appmsg.registerform.namelabel}
             />
-            <InputForm placeholder={"SoyAd Giriniz..."}
+            <InputForm placeholder={appmsg.registerform.surnameplaceholder}
                        type={"text"}
                        sublabel={true}
                        sublabelclass={surnameValidate === true ? "valid-feedback" : 'invalid-feedback'}
-                       sublabeltext={surnameValidate === true ? '' : "Soyisim  Geçersiz"}
+                       sublabeltext={surnameValidate === true ? '' : appmsg.registerform.surnameerror}
                        {...bindsurname}
                        forminputclass={surnameValidate === true ? "is-valid" : "is-invalid"}
                        toplabel={true}
-                       toplabeltext={"Soyad"}
+                       toplabeltext={appmsg.registerform.surnamelabel}
             />
-            <InputForm placeholder={"ornek@example.com"}
+            <InputForm placeholder={appmsg.registerform.emailplaceholder}
                        type={"email"}
                        sublabel={true}
                        sublabelclass={emailValidate === true ? "valid-feedback" : 'invalid-feedback'}
-                       sublabeltext={emailValidate === true ? '' : "Email Adresi Geçersiz"}
+                       sublabeltext={emailValidate === true ? '' : appmsg.registerform.emailerror}
                        {...bindemail}
                        forminputclass={emailValidate === true ? "is-valid" : "is-invalid"}
                        toplabel={true}
-                       toplabeltext={"Email"}
+                       toplabeltext={appmsg.registerform.emaillabel}
             />
-            <InputForm placeholder={"ornek@example.com"}
+            <InputForm placeholder={appmsg.registerform.passwordplaceholder}
                        type={"password"}
                        sublabel={true}
                        sublabelclass={passwordValidate === true ? "valid-feedback" : 'invalid-feedback'}
-                       sublabeltext={passwordValidate === true ? '' : "Parolanız 8 Karakter İçermelidir"}
+                       sublabeltext={passwordValidate === true ? '' : appmsg.registerform.passworderror}
                        {...bindpassword}
                        forminputclass={passwordValidate === true ? "is-valid" : "is-invalid"}
                        toplabel={true}
-                       toplabeltext={"Parola"}
+                       toplabeltext={appmsg.registerform.passwordlabel}
             />
             <div className="form-group mb-0 text-center">
                 <Button icon="fa fa-sign-in mr-1"
@@ -94,11 +100,10 @@ const RegisterForm = props => {
                             validateForm()
                         }}
                         disabled={(emailValidate === true && passwordValidate === true) ? false : true} type={"button"}
-                        buttontxt={"Kayıt Ol"} buttonclases={"btn-primary btn-block"}>
+                        buttontxt={appmsg.registerform.register} buttonclases={"btn-primary btn-block"}>
                 </Button>
                 {state.loading === true ? <Loading/> : null}
             </div>
-
         </React.Fragment>
     )
 }

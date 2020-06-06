@@ -9,7 +9,7 @@ import {useHistory, useParams} from "react-router-dom";
 import Loading from "./loading";
 import appmsg from "../utils/appmsg";
 
-const PasswordResetForm = props => {
+const PasswordResetForm = () => {
     const [loading, setLoading] = useState(false)
     const [userId, setuserId] = useState(1)
     const [password, bindpassword, resetpassword, passwordValidate] = useInput('', passwordValidator)
@@ -21,10 +21,6 @@ const PasswordResetForm = props => {
         passwordtokencheck(token).then((response) => {
             setuserId(response.data._id)
         }).catch((error) => {
-            if (error.response.status === 404) {
-                msgBox("error", "Link Geçersiz")
-            }
-
             history.replace("/login")
         })
     }, [])
@@ -33,17 +29,15 @@ const PasswordResetForm = props => {
         updatepass({userid: userId, password: password}).then((response) => {
             history.replace("/login")
             setLoading(false)
-        }).catch((error) => {
-            msgBox("error", appmsg.errormsg)
         })
     }
     const validateForm = () => {
         if (passwordValidator(password) === false) {
-            msgBox("error", "Lütfen Geçerli Bir Parola  Giriniz")
+            msgBox("error", appmsg.resetpassword.password)
         } else if (passwordValidator(confirmpassword) === false) {
-            msgBox("error", "Lütfen Geçerli Bir Parola  Tekrarı  Giriniz")
+            msgBox("error", appmsg.resetpassword.passwordconfirm)
         } else if (confirmpassword !== password) {
-            msgBox("error", "Parolalar Eşleşmiyor")
+            msgBox("error", appmsg.resetpassword.passwordnotmatch)
         } else {
             updatepassword()
         }
@@ -51,29 +45,29 @@ const PasswordResetForm = props => {
     return (
         <React.Fragment>
             {loading ? <Loading/> : null}
-            <InputForm placeholder={"Parola"}
+            <InputForm placeholder={appmsg.resetpassword.passwordplaceholder}
                        type={"password"}
                        sublabel={true}
                        {...bindpassword}
                        sublabelclass={passwordValidate === true ? (confirmpassword != password) ? "invalid-feedback" : "valid-feedback" : 'invalid-feedback'}
-                       sublabeltext={passwordValidate === true ? (confirmpassword != password) ? "Parolalar Eşleşmiyor" : '' : "Parola Geçersiz"}
+                       sublabeltext={passwordValidate === true ? (confirmpassword != password) ? appmsg.resetpassword.passwordnotmatch : '' : appmsg.resetpassword.passworderror}
                        forminputclass={passwordValidate === true ? (confirmpassword != password) ? "is-invalid" : "is-valid" : "is-invalid"}
                        toplabel={true}
-                       toplabeltext={"Parola"}
+                       toplabeltext={appmsg.resetpassword.passwordlabel}
             />
 
-            <InputForm placeholder={"Parola Tekrarı"}
+            <InputForm placeholder={appmsg.resetpassword.confirpasswordplaceholder}
                        type={"password"}
                        sublabel={true}
                        sublabelclass={confirmpasswordValidate === true ? (confirmpassword != password) ? "invalid-feedback" : "valid-feedback" : 'invalid-feedback'}
                        sublabeltext={
-                           confirmpasswordValidate === true ? (confirmpassword != password) ? "Parolalar Eşleşmiyor" : ''
-                               : "Parola Tekrarı Geçersiz"
+                           confirmpasswordValidate === true ? (confirmpassword != password) ? appmsg.resetpassword.passwordnotmatch: ''
+                               : appmsg.resetpassword.confirmpassworderror
                        }
                        {...bindconfirmpassword}
                        forminputclass={confirmpasswordValidate === true ? (confirmpassword != password) ? "is-invalid" : "is-valid" : "is-invalid"}
                        toplabel={true}
-                       toplabeltext={"Parola Tekrarı"}
+                       toplabeltext={appmsg.resetpassword.confirmpasswordlabel}
             />
 
             <div className="form-group mb-0 text-center">
@@ -83,7 +77,7 @@ const PasswordResetForm = props => {
                         }}
                         disabled={(passwordValidate === true && confirmpasswordValidate === true && password === confirmpassword) ? false : true}
                         type={"button"}
-                        buttontxt={"Parolamı Sıfırla"} buttonclases={"btn-primary btn-block"}/>
+                        buttontxt={appmsg.resetpassword.resetpassword} buttonclases={"btn-primary btn-block"}/>
 
             </div>
         </React.Fragment>
