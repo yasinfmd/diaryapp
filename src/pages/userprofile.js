@@ -19,12 +19,10 @@ export default function UserProfile() {
     const [editedMode, setEditedMode] = useState(false)
     const [editedImageMode, setEditedImageMode] = useState(false)
     const [base64, setBase64] = useState(null)
-    const {userstate, userdispatch, show, updateProfileImg} = useContext(UserContext)
+    const {userstate, show, updateProfileImg} = useContext(UserContext)
     const [prof, setprof] = useState(null)
     useEffect(() => {
         show({id: user._id, fields: "fullname image name surname email diaries"}).then((response) => {
-        }).catch((error) => {
-            msgBox("error", appmsg.errormsg)
         })
     }, [])
     const resetFileInput = () => {
@@ -43,9 +41,7 @@ export default function UserProfile() {
             resetFileInput()
             setEditedImageMode(false)
             setEditedMode(false)
-            msgBox("success", "Profil Resmi Başarıyl Güncellendi")
-        }).catch((error) => {
-            msgBox("error", appmsg.errormsg)
+            msgBox("success", appmsg.userprofile.updateprofileimg)
         })
 
     }
@@ -54,7 +50,7 @@ export default function UserProfile() {
         let result = true
         result = ImageValidator(fileInput.current.files)
         if (result === false) {
-            msgBox("warning", "Yalnızca Resim Dosyayı Seçilmelidir")
+            msgBox("warning", appmsg.userprofile.onlyimagefile)
         } else {
             const file = fileInput.current.files[0]
             setprof(file)
@@ -73,7 +69,6 @@ export default function UserProfile() {
         if (userstate.loading == true || userstate.user == null) {
             renderitem = <Loading/>
         } else {
-            console.log("bakstate", userstate)
             renderitem = <ProfileCard src={userstate.user.image}
                                       onImageEditClick={() => {
                                           setEditedMode(false)

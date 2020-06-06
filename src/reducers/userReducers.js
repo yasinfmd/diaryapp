@@ -1,5 +1,4 @@
 export default function userReducers(state, action) {
-    debugger
     switch (action.type) {
         case "SHOW":
             return {
@@ -7,7 +6,6 @@ export default function userReducers(state, action) {
                 user: action.user
             }
         case "UPDATEUSER":
-            debugger
             let updateuser;
             if (action.loading == false && action.payload) {
                 updateuser = state.user
@@ -16,7 +14,6 @@ export default function userReducers(state, action) {
                 updateuser.fullname = action.payload.name + " " + action.payload.surname
                 updateuser.email = action.payload.email
             }
-
             return {
                 loading: action.loading,
                 user: updateuser?updateuser:state.user

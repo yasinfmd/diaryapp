@@ -20,7 +20,7 @@ const AuthStore = ({children}) => {
             axios.post("http://127.0.0.1:3000/api/auth/forgotpassword", data, header()).then((res) => {
                 resolve(res)
             }).catch((err) => {
-                if (error.response.status === 404) {
+                if (err.response.status === 404) {
                     msgBox("info", appmsg.forgotpassword.emailnotfound)
                 }
                 handleError(err)

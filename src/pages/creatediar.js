@@ -15,13 +15,16 @@ import PageSubHeader from "../components/pagesubheader";
 import {ImageValidator} from "../utils/appimagevalidator";
 import {readFileBase64} from "../utils/appimageconverter";
 import {useHistory} from "react-router-dom";
+import moment from "moment";
+import {urlParse} from "../utils/appparser";
+
 const CreateDiary = () => {
     let history = useHistory();
     let creatediarfileInput = useRef()
     const [diartext, setDiarText] = useState("")
     const [diartitle, setDiarTitle] = useState("")
     const {user} = useContext(GlobalContext)
-    const {creatediary, state, dispatch, addImages} = useContext(DiaryContext)
+    const {creatediary,fetchdiary, state, dispatch, addImages} = useContext(DiaryContext)
     const [diarimages, setdiarimages] = useState([])
     const [uploadedImages, setUploadedImages] = useState([])
     const onChangeEditor = (e) => {
@@ -92,10 +95,8 @@ const CreateDiary = () => {
         }
         formData.append("diarId", dairId)
         addImages(formData).then((response) => {
-            msgBox("success", "Günlük Başarıyla Oluşturuldu")
+            msgBox("success", appmsg.creatediary.creatediar)
             history.push("/")
-        }).catch((error) => {
-            msgBox("error", appmsg.errormsg)
         })
     }
     const creatediar = () => {
@@ -110,41 +111,50 @@ const CreateDiary = () => {
             if (response.status === 200) {
                 if (uploadedImages.length > 0)
                     return uploadMultipleImages(response.data._id)
-                msgBox("success", "Günlük Başarıyla Oluşturuldu")
-                history.push("/")
-                debugger
-                //detaya yönlendir
+                msgBox("success", appmsg.creatediary.creatediar)
+                history.push("/diar-detail/" + response.data._id)
             } else if (response.status === 204) {
+                fetchTodayDiar()
+                //show de detaya gönder ?
                 //listeye yada detaya yönlendir
-                msgBox("info", "Bugün İçin Bir Günlük Zaten Yazıldı, Düzenlemek İstiyorsanız Günlüklerime Gidin")
+                msgBox("info", appmsg.creatediary.havediar)
             }
-            debugger
+        })
+    }
+    const fetchTodayDiar=()=>{
+        const today = moment().format('YYYY-MM-DD');
+        const tomorrow=moment().add(1,"days").format("YYYY-MM-DD")
+       const where = urlParse.parse("dairdate>" + today + "&dairdate<" + tomorrow)
+        fetchdiary({
+            urlparse: where,
+            userid: user._id,
+            fields: "fullname",
+            dairfields: "title content dairdate dairdateString -videos -images "
+        }).then((response) => {
+          history.push("/diar-detail/" + response.data.diaries[0]._id)
         }).catch((error) => {
             msgBox("error", appmsg.errormsg)
         })
     }
-
     const formValidate = () => {
         if (diarTitleValidator(diartitle) === false) {
-            msgBox("error", "Lütfen Günlük Başlığı Giriniz")
+            msgBox("error", appmsg.creatediary.enterdiartitle)
         } else if (diarContentValidator(diartext) === false) {
-            msgBox("error", "Lütfen Günlük İçeriği Giriniz")
-        }
-        /*dosya kontrolleri*/
-        else {
+            msgBox("error", appmsg.creatediary.enterdiarcontent)
+        } else {
             creatediar()
         }
     }
     return (
         <React.Fragment>
-            <PageSubHeader pagename={"Günlük Yaz"}/>
+            <PageSubHeader pagename={appmsg.creatediary.creatediartitle}/>
             <Card>
 
 
                 <Flex column={"col-xl-12 col-lg-12"}>
 
 
-                    <InputForm placeholder={"...."}
+                    <InputForm placeholder={appmsg.creatediary.diartitleplaceholder}
                                value={diartitle}
                                onChange={(e) => {
                                    setDiarTitle(e.target.value)
@@ -156,11 +166,11 @@ const CreateDiary = () => {
                                sublabeltext=""
                                forminputclass=""
                                toplabel={true}
-                               toplabeltext={"Günlük Başlığı"}
+                               toplabeltext={appmsg.creatediary.diartitlelabel}
                     />
                     <MyEditor autoFocus={true}
                               value={diartext}
-                              label={"Günlük İçeriği"}
+                              label={appmsg.creatediary.diartcontentlabel}
                               onChange={(e) => {
                                   onChangeEditor(e)
                               }}
@@ -169,7 +179,7 @@ const CreateDiary = () => {
                     <div className="row">
                         <div className="col-lg-6">
                             <Card>
-                                <p className="text text-center"> Resim Yükleme
+                                <p className="text text-center"> {appmsg.creatediary.uploadimg}
                                 </p>
                                 <div className="form-group mb-3 mt-3">
                                     <a
@@ -179,7 +189,7 @@ const CreateDiary = () => {
                                         aria-pressed="true"
                                         className="btn btn-block btn-rounded btn-success text-white"
                                         role="button"
-                                    >Resim Seç</a>
+                                    >{appmsg.creatediary.pickimage}</a>
                                     <input className={"form-control"} multiple hidden type={"file"}
                                            ref={creatediarfileInput}
                                            name="myImage"
@@ -193,13 +203,13 @@ const CreateDiary = () => {
                                 </div>
                                 <div className="form-group">
                                     <p className="text text-center font-20 font-weight-bold mt-3 pb-2">
-                                        {diarimages.length > 1 ? 'Önizleme' : ''}
+                                        {diarimages.length > 1 ? appmsg.creatediary.preview : ''}
 
                                     </p>
 
                                     {renderPreview()}
                                     <p className="text text-center mt-3 pb-2">{
-                                        diarimages.length > 1 ? 'Toplam Resim ' + diarimages.length : ''
+                                        diarimages.length > 1 ? appmsg.creatediary.totalimg + " " + diarimages.length : ''
                                     }</p>
                                 </div>
                             </Card>

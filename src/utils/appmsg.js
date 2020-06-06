@@ -53,6 +53,51 @@ const appmsg = {
         confirpasswordplaceholder:"Parola Tekrarı...",
         confirmpassworderror:"Parola Tekrarı 8 Karakterden Küçük Olamaz",
         confirmpasswordlabel:"Parola Tekrarı"
+    },
+    loginlayout:{
+        forgotpassword:"Parolamı Unuttum",
+        mainmsg:"Hayat Bir Günlük İle Başlar :)",
+        created:"Created by Yasin Dalkılıç"
+    },
+    diarystate:{
+        diarynotfount:"Günlük Bulunamadı"
+    },
+    creatediary:{
+      creatediar:"Günlük Başarıyla Oluşturuldu",
+        havediar:"Bugün İçin Bir Günlük Zaten Yazıldı, Günlük Detayına Yönlendiriliyorsunuz",
+        enterdiartitle:"Lütfen Günlük Başlığı Giriniz",
+        enterdiarcontent:"Lütfen Günlük İçeriği Giriniz",
+        creatediartitle:"Günlük Yaz",
+        diartitleplaceholder:"...",
+        diartitlelabel:"Günlük Başlığı",
+        diartcontentlabel:"Günlük İçeriği",
+        uploadimg:"Resim Yükleme",
+        pickimage:"Resim Seç",
+        preview:"Önizleme",
+        totalimg:"Toplam Resim"
+    },
+    userprofile:{
+        usernotfount:"Kullanıcı Bulunamadı",
+        updateprofileimg:"Profil Resmi Başarıyla Güncellendi",
+        onlyimagefile:"Yalnızca Resim Dosyası Seçilmelidir",
+        pleaseupdafefield:"Lütfen Alanları Güncelleyiniz",
+        updateuser:"Güncellemi İşlemi Başarıyla Gerçekleşti",
+        name:"Lütfen Geçerli Bir Ad Giriniz",
+        surname:"Lütfen Geçerli Bir Soyad Giriniz",
+        email:"Lütfen Geçerli Bir Email Giriniz",
+        update:"Düzenle",
+        nameplaceholder: "İsim Giriniz...",
+        nameerror: "İsim Geçersiz",
+        namelabel: "Adınız",
+        surnameplaceholder: "Soyad Giriniz...",
+        surnameerror: "Soyad Geçersiz",
+        surnamelabel: "Soyad",
+        emailplaceholder: "ornek@example.com",
+        emailerror: "Email Adresi Geçersiz",
+        emaillabel: "Email",
+    },
+    globalstate:{
+        sessionend:"Oturum Süresi Dolmuştur Giriş Sayfasına Yönlendiriliyorsunuz"
     }
 }
 

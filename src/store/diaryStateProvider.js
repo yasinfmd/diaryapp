@@ -6,6 +6,7 @@ import header from "../utils/axiosheader";
 import {useHistory} from "react-router-dom";
 import {msgBox} from "../utils/appmsgbox";
 import handleError from "../utils/apphttperror";
+import appmsg from "../utils/appmsg";
 
 
 const DiaryStore = ({children}) => {
@@ -106,9 +107,9 @@ const DiaryStore = ({children}) => {
                 resolve(res)
             }).catch((err) => {
                 if (err.response.status === 404) {
-                    msgBox("info", "Günlük Bulunamadı")
+                    msgBox("info", appmsg.diarystate.diarynotfount)
                     history.replace("/")
-                }else{
+                } else {
                     handleError(err)
                 }
                 diaryDispatch({type: "SHOW", loading: false, error: err})

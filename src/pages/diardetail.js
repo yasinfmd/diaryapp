@@ -45,6 +45,7 @@ export default function DiarDetail() {
     }
     const renderSliderItem = () => {
         if (!state.error && state.loading === false && state.showdiar._id != undefined) {
+            console.log("zzz", state.showdiar)
             if (state.showdiar.images && state.showdiar.images.length > 0) {
                 return state.showdiar.images.map((image, index) => {
                     return (
@@ -78,9 +79,15 @@ export default function DiarDetail() {
                         {(!state.error && state.showdiar && state.showdiar._id != undefined && state.showdiar.videos.length > 0) ?
                             <ul className="list-group">
 
-                                <li className={`list-group-item ${playingVideo ? 'active' : ''}`}>
+                                <li className={`list-group-item ${playingVideo ? 'active' : ''}`} onClick={() => {
+                                    setPlaying(!playing)
+                                    setPlayingVideo((oldval) => {
+                                        if (oldval != null) return null
+                                        return state.showdiar.videos[0].videoUri
+                                    })
+                                }}>
                                     <i className="fa fa-play mr-1 text-success"></i>
-                                    <label className={"text pl-1"}> {state.showdiar.videos[0].videoUri}</label>
+                                    <label className={"text pl-1"}> {state.showdiar.videos[0].fileName}</label>
                                 </li>
                             </ul> : "Video Bulunamadı"
                         }

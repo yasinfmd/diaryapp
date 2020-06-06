@@ -15,8 +15,8 @@ import Button from "../components/Button";
 
 const Dashboard = (props) => {
     //userid ekle
-    const {isAuth, user} = useContext(GlobalContext)
-    const {fetchdiary, state, dispatch, deleteDiar} = useContext(DiaryContext)
+    const { user} = useContext(GlobalContext)
+    const {fetchdiary, state,  deleteDiar} = useContext(DiaryContext)
     useEffect(() => {
         const firstDay = moment().startOf('month').format('YYYY-MM-DD');
         const lastDay = moment().endOf('month').format('YYYY-MM-DD HH:mm');

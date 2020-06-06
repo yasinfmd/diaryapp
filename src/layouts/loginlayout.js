@@ -1,6 +1,7 @@
 import React from 'react'
 import LoginFormSecondFooter from "../components/loginformsecondfooter";
 import {Link} from "react-router-dom";
+import appmsg from "../utils/appmsg";
 
 
 export default (props) => {
@@ -28,7 +29,7 @@ export default (props) => {
                                     <div className="text-center mt-4">
                                         <p className="text-muted font-16">
                                             <Link to={"/forgotpassword"} className="text-muted ml-1">
-                                                Parolamı Unuttum
+                                                {appmsg.loginlayout.forgotpassword}
                                             </Link>
                                         </p>
                                     </div> : null

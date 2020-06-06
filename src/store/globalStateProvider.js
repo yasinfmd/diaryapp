@@ -1,7 +1,8 @@
-import React, {useContext, useEffect, useReducer, useState} from "react";
+import React, {useState} from "react";
 import GlobalContext from "../context/globalContext"
 import {useHistory} from "react-router-dom";
 import {msgBox} from "../utils/appmsgbox";
+import appmsg from "../utils/appmsg";
 
 const GlobalStore = ({children}) => {
     let history = useHistory();
@@ -11,7 +12,7 @@ const GlobalStore = ({children}) => {
     const [user, setUser] = useState(isUserExist)
     const setExpiresin = (time) => {
         setTimeout(() => {
-            msgBox("info", "Oturum Süresi Dolmuştur Giriş Sayfasına Yönlendiriliyorsunuz")
+            msgBox("info", appmsg.globalstate.sessionend)
             logout();
         }, time)
     }
@@ -19,7 +20,6 @@ const GlobalStore = ({children}) => {
         setIsAuth(auth)
     }
     const updateUser = (user) => {
-        debugger
         setUser(user)
     }
     const logout = () => {
@@ -34,7 +34,7 @@ const GlobalStore = ({children}) => {
             if (time > +expiration) {
                 logout()
                 console.log("süre geçti")
-                msgBox("info", "Oturum Süresi Dolmuştur Giriş Sayfasına Yönlendiriliyorsunuz")
+                msgBox("info", appmsg.globalstate.sessionend)
             } else {
                 const second = +expiration - time
                 setExpiresin(second)
