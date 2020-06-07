@@ -57,11 +57,12 @@ const DiaryStore = ({children}) => {
         return deferred
     }
     const deleteDiar = (data) => {
+        debugger
         let deferred = new Promise(((resolve, reject) => {
             diaryDispatch({type: "DELETE", loading: true, payload: []})
             axios.post("http://127.0.0.1:3000/api/dair/delete", data, header()).then((response) => {
                 let groupedDiary = []
-                if (data.groupedindex !== undefined || data.groupedindex !== null) {
+                if (data.groupedindex !== undefined || data.groupedindex !== undefined) {
                     if (diaryState.groupeduserdiary[data.groupedindex].count === 1) {
                         groupedDiary = diaryState.groupeduserdiary
                         groupedDiary.splice(data.groupedindex, 1)
@@ -87,6 +88,18 @@ const DiaryStore = ({children}) => {
         }))
         return deferred
     }
+    const addVideo=(formData)=>{
+        let deferred = new Promise(((resolve, reject) => {
+            axios.post("http://127.0.0.1:3000/api/video/create", formData, header('multipart/form-data')).then((response) => {
+                resolve(response)
+            }).catch((err) => {
+                handleError(err)
+                reject(err)
+            })
+        }))
+        return deferred
+    }
+
     const addImages = (formData) => {
         let deferred = new Promise(((resolve, reject) => {
             axios.post("http://127.0.0.1:3000/api/image/create", formData, header('multipart/form-data')).then((response) => {
@@ -144,6 +157,7 @@ const DiaryStore = ({children}) => {
             dispatch: diaryDispatch,
             creatediary: create,
             addImages: addImages,
+            addVideo:addVideo,
             fetchdiary: fetch,
             fetchUserGroupedDiary: fetchUserGroupedDiary,
             deleteDiar: deleteDiar,

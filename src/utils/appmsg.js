@@ -74,7 +74,9 @@ const appmsg = {
         uploadimg:"Resim Yükleme",
         pickimage:"Resim Seç",
         preview:"Önizleme",
-        totalimg:"Toplam Resim"
+        totalimg:"Toplam Resim",
+        savediar:"Günlüğü Kaydet",
+        onlyvideo:"Yalnızca Video Dosyası Seçilmelidir"
     },
     userprofile:{
         usernotfount:"Kullanıcı Bulunamadı",

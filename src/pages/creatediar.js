@@ -12,7 +12,7 @@ import {msgBox} from "../utils/appmsgbox";
 import DiaryContext from "../context/diaryContext";
 import Loading from "../components/loading";
 import PageSubHeader from "../components/pagesubheader";
-import {ImageValidator} from "../utils/appimagevalidator";
+import {ImageValidator, VideoValidator} from "../utils/appimagevalidator";
 import {readFileBase64} from "../utils/appimageconverter";
 import {useHistory} from "react-router-dom";
 import moment from "moment";
@@ -21,14 +21,26 @@ import {urlParse} from "../utils/appparser";
 const CreateDiary = () => {
     let history = useHistory();
     let creatediarfileInput = useRef()
+    let creatediarvideoInput = useRef()
     const [diartext, setDiarText] = useState("")
     const [diartitle, setDiarTitle] = useState("")
     const {user} = useContext(GlobalContext)
-    const {creatediary,fetchdiary, state, dispatch, addImages} = useContext(DiaryContext)
+    const {creatediary, fetchdiary, state, dispatch, addImages, addVideo} = useContext(DiaryContext)
     const [diarimages, setdiarimages] = useState([])
+    const [diarvideo, setdiarvideo] = useState(null);
     const [uploadedImages, setUploadedImages] = useState([])
     const onChangeEditor = (e) => {
         setDiarText(e)
+    }
+    const changeVideo = () => {
+        creatediarvideoInput.current.files.forEach((file) => {
+            if (VideoValidator(file) === false) {
+                msgBox("error", appmsg.creatediary.onlyvideo)
+            } else {
+                setdiarvideo(file)
+            }
+
+        })
     }
     const changeImage = () => {
         let base64Images = []
@@ -95,6 +107,16 @@ const CreateDiary = () => {
         }
         formData.append("diarId", dairId)
         addImages(formData).then((response) => {
+            if (diarvideo) return uploadVideo(dairId)
+            msgBox("success", appmsg.creatediary.creatediar)
+            history.push("/")
+        })
+    }
+    const uploadVideo = (dairId) => {
+        let formData = new FormData();
+        formData.append("file", diarvideo)
+        formData.append("dairid",dairId)
+        addVideo(formData).then((res) => {
             msgBox("success", appmsg.creatediary.creatediar)
             history.push("/")
         })
@@ -109,10 +131,14 @@ const CreateDiary = () => {
         creatediary(diar).then((response) => {
             resetForm()
             if (response.status === 200) {
-                if (uploadedImages.length > 0)
+                if (uploadedImages.length > 0) {
                     return uploadMultipleImages(response.data._id)
-                msgBox("success", appmsg.creatediary.creatediar)
-                history.push("/diar-detail/" + response.data._id)
+                } else {
+                    if (diarvideo) return uploadVideo(response.data._id)
+                    msgBox("success", appmsg.creatediary.creatediar)
+                    history.push("/diar-detail/" + response.data._id)
+                }
+
             } else if (response.status === 204) {
                 fetchTodayDiar()
                 //show de detaya gönder ?
@@ -121,17 +147,17 @@ const CreateDiary = () => {
             }
         })
     }
-    const fetchTodayDiar=()=>{
+    const fetchTodayDiar = () => {
         const today = moment().format('YYYY-MM-DD');
-        const tomorrow=moment().add(1,"days").format("YYYY-MM-DD")
-       const where = urlParse.parse("dairdate>" + today + "&dairdate<" + tomorrow)
+        const tomorrow = moment().add(1, "days").format("YYYY-MM-DD")
+        const where = urlParse.parse("dairdate>" + today + "&dairdate<" + tomorrow)
         fetchdiary({
             urlparse: where,
             userid: user._id,
             fields: "fullname",
             dairfields: "title content dairdate dairdateString -videos -images "
         }).then((response) => {
-          history.push("/diar-detail/" + response.data.diaries[0]._id)
+            history.push("/diar-detail/" + response.data.diaries[0]._id)
         }).catch((error) => {
             msgBox("error", appmsg.errormsg)
         })
@@ -218,15 +244,42 @@ const CreateDiary = () => {
 
                         <div className="col-lg-6">
                             <Card>
+                                <p className="text text-center">Video Yükleme</p>
                                 <div className="form-group mb-3">
-                                    <label>Date Picker</label>
-                                    <input type="file" className="form-control"/>
+            <button onClick={()=>{uploadVideo()}}>yükle</button>
+                                    <a
+                                        onClick={() => {
+                                            creatediarvideoInput.current.click();
+                                        }}
+                                        aria-pressed="true"
+                                        className="btn btn-block btn-rounded btn-success text-white"
+                                        role="button"
+                                    > Video Seç</a>
+                                    {diarvideo ?
+                                        <p className={"text text-center pt-3"}> Seçilen Video : {diarvideo.name}
+
+                                            <Button type={"button"} buttontxt={"Videoyu Sil"} onClick={() => {
+                                                setdiarvideo(null)
+                                            }}
+                                                    buttonclases={"btn-sm btn-xs btn-outline-danger"}
+                                                    icon={'pr-2 fa fa-trash'}/>
+                                        </p> : null
+                                    }
+                                    <input className={"form-control"} hidden type={"file"}
+                                           ref={creatediarvideoInput}
+                                           name="myImage"
+                                           onChange={() => {
+                                               changeVideo()
+                                           }}
+                                           accept="video/*"
+                                           style={{display: "none"}}
+                                    />
                                 </div>
-                                Video Yükleme
+
                             </Card>
                         </div>
                     </div>
-                    <Button type={"button"} buttontxt={"Günlüğü Kaydet"}
+                    <Button type={"button"} buttontxt={appmsg.creatediary.savediar}
                             onClick={() => {
                                 formValidate()
                             }}
