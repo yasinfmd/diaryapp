@@ -175,11 +175,7 @@ const CreateDiary = () => {
         <React.Fragment>
             <PageSubHeader pagename={appmsg.creatediary.creatediartitle}/>
             <Card>
-
-
                 <Flex column={"col-xl-12 col-lg-12"}>
-
-
                     <InputForm placeholder={appmsg.creatediary.diartitleplaceholder}
                                value={diartitle}
                                onChange={(e) => {
@@ -244,9 +240,8 @@ const CreateDiary = () => {
 
                         <div className="col-lg-6">
                             <Card>
-                                <p className="text text-center">Video Yükleme</p>
+                                <p className="text text-center">{appmsg.creatediary.videoupload}</p>
                                 <div className="form-group mb-3">
-            <button onClick={()=>{uploadVideo()}}>yükle</button>
                                     <a
                                         onClick={() => {
                                             creatediarvideoInput.current.click();
@@ -254,7 +249,7 @@ const CreateDiary = () => {
                                         aria-pressed="true"
                                         className="btn btn-block btn-rounded btn-success text-white"
                                         role="button"
-                                    > Video Seç</a>
+                                    > {appmsg.creatediary.pickvideo}</a>
                                     {diarvideo ?
                                         <p className={"text text-center pt-3"}> Seçilen Video : {diarvideo.name}
 

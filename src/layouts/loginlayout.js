@@ -5,7 +5,6 @@ import appmsg from "../utils/appmsg";
 
 
 export default (props) => {
-    console.log()
     return (
         <React.Fragment>
             <div className="authentication-bg pb-0">

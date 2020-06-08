@@ -31,7 +31,7 @@ export default function DiarDetail() {
         })
     }
     const renderDiar = () => {
-        if (!state.error && state.loading === false && state.showdiar._id !== undefined) {
+        if (!state.error && state.loading === false && state.showdiar && state.showdiar._id !== undefined) {
             return (
                 <Card title={moment(state.showdiar.dairdate).format("LLLL")}>
                     <h3 className="mt-3 mb-3 loginTitle font-weight-normal mt-0"

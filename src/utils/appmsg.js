@@ -76,7 +76,9 @@ const appmsg = {
         preview:"Önizleme",
         totalimg:"Toplam Resim",
         savediar:"Günlüğü Kaydet",
-        onlyvideo:"Yalnızca Video Dosyası Seçilmelidir"
+        onlyvideo:"Yalnızca Video Dosyası Seçilmelidir",
+        videoupload:"Video Yükleme",
+        pickvideo:"Video Seç"
     },
     userprofile:{
         usernotfount:"Kullanıcı Bulunamadı",
