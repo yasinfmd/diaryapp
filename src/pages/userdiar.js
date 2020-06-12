@@ -10,11 +10,13 @@ import {msgBox} from "../utils/appmsgbox";
 import {datewithnumber} from "../utils/datewithnumber";
 import appmsg from "../utils/appmsg";
 import {urlParse} from "../utils/appparser";
-import {Link} from "react-router-dom";
+import {Link, Route, Switch} from "react-router-dom";
 import moment from "moment";
 import Button from "../components/Button";
+import CreateDiar from "../pages/creatediar"
 
 export default function UserDiar() {
+
     const {user} = useContext(GlobalContext)
     const [cl, setCl] = useState("collapse")
 
@@ -131,6 +133,10 @@ export default function UserDiar() {
 
     return (
         <React.Fragment>
+                
+            {/*    <Route path={`${path}/:topicId`}>
+                    <Topic />
+                </Route>*/}
             <PageSubHeader pagename={"Günlüklerim"}/>
 
             <Card>

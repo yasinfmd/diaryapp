@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from "react";
+import React, {useContext, useEffect, useMemo, useState} from "react";
 import PageSubHeader from "../components/pagesubheader";
 import Card from "../components/card";
 import GlobalContext from "../context/globalContext";
@@ -10,6 +10,7 @@ import SliderItem from "../components/slideritem";
 import moment from "moment";
 import Flex from "../components/flex";
 import ReactPlayer from 'react-player'
+import Button from "../components/Button";
 
 export default function DiarDetail() {
     let history = useHistory();
@@ -24,13 +25,13 @@ export default function DiarDetail() {
 
     }, [])
     const showDiar = (id) => {
-        debugger
         show({populate: "images videos", userid: user._id, dairid: id}).then((response) => {
         }).catch((error) => {
             history.replace("/")
         })
     }
-    const renderDiar = () => {
+    const renderDiar = useMemo(() => {
+        console.log("render diar çalıştı")
         if (!state.error && state.loading === false && state.showdiar && state.showdiar._id !== undefined) {
             return (
                 <Card title={moment(state.showdiar.dairdate).format("LLLL")}>
@@ -42,10 +43,14 @@ export default function DiarDetail() {
                 </Card>
             )
         }
-    }
-    const renderSliderItem = () => {
+    }, [state.error, state.loading, state.showdiar])
+/*    const renderDiar = () => {
+        console.log("render diar çalıştı")
+
+    }*/
+    const renderSliderItem = useMemo(() => {
+        console.log("renderslideritem çalıştı")
         if (!state.error && state.loading === false && state.showdiar._id != undefined) {
-            console.log("zzz", state.showdiar)
             if (state.showdiar.images && state.showdiar.images.length > 0) {
                 return state.showdiar.images.map((image, index) => {
                     return (
@@ -58,7 +63,11 @@ export default function DiarDetail() {
                 })
             }
         }
-    }
+    }, [state.error, state.loading, state.showdiar])
+    /*   const renderSliderItem = () => {
+           console.log("renderslideritem çalıştı")
+
+       }*/
     return (
 
         <React.Fragment>
@@ -70,7 +79,7 @@ export default function DiarDetail() {
                         <p className={"text text-center"}>Resimler</p>
                         {(!state.error && state.showdiar && state.showdiar._id != undefined && state.showdiar.images.length > 0) ?
                             <Slider sliderid={"diarslider"}>
-                                {renderSliderItem()}
+                                {renderSliderItem}
                             </Slider> : "Resim Bulunamadı"
                         }
                     </div>
@@ -102,7 +111,7 @@ export default function DiarDetail() {
                                  controls={true}/>
                 </Flex>
             </Card>) : null}
-            {renderDiar()}
+            {renderDiar}
         </React.Fragment>
 
     )

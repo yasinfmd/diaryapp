@@ -1,6 +1,7 @@
 import React from "react";
 
 const Flex = (props) => {
+    console.log("flex")
     return (
         <div className="row">
             <div className={props.column}>
@@ -10,4 +11,4 @@ const Flex = (props) => {
     )
 }
 
-export default Flex;
+export default  React.memo(Flex);

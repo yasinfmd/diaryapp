@@ -1,4 +1,4 @@
-import React, {useContext, useRef, useState} from "react";
+import React, {useContext, useEffect, useMemo, useRef, useState} from "react";
 import Card from "../components/card";
 import MyEditor from "../components/editor";
 import InputForm from "../components/formInput";
@@ -71,31 +71,32 @@ const CreateDiary = () => {
         setdiarimages([])
         setdiarimages(images)
     }
-    const renderPreview = () => {
-        if (diarimages.length > 1) {
-            return diarimages.map((image, index) => {
-                return (
-                    <React.Fragment key={index + "fragment"}>
-                        <img
-                            key={index + "img"}
-                            src={image.base64}
-                            alt="image"
-                            className="img-fluid avatar-xl pl-2 pt-2"/>
-                        <Button buttonclases={"btn-danger btn-xs btn-sm"}
-                                onClick={() => {
-                                    removePreviewImage(index)
-                                }}
-                                key={index + "btn"}
-                                type={"button"} icon={"fa fa-times"}/>
 
-                    </React.Fragment>
 
-                )
-            })
-        }
-    }
+    const renderPreview=useMemo(()=>{
+        return diarimages.map((image, index) => {
+            return (
+                <React.Fragment key={index + "fragment"}>
+                    <img
+                        key={index + "img"}
+                        src={image.base64}
+                        alt="image"
+                        className="img-fluid avatar-xl pl-2 pt-2"/>
+                    <Button buttonclases={"btn-danger btn-xs btn-sm"}
+                            onClick={() => {
+                                removePreviewImage(index)
+                            }}
+                            key={index + "btn"}
+                            type={"button"} icon={"fa fa-times"}/>
+
+                </React.Fragment>
+
+            )
+        })
+    },[diarimages.length])
+
+
     const resetForm = () => {
-        //dosyalara bakılacak
         setDiarTitle("")
         setDiarText("")
     }
@@ -115,7 +116,7 @@ const CreateDiary = () => {
     const uploadVideo = (dairId) => {
         let formData = new FormData();
         formData.append("file", diarvideo)
-        formData.append("dairid",dairId)
+        formData.append("dairid", dairId)
         addVideo(formData).then((res) => {
             msgBox("success", appmsg.creatediary.creatediar)
             history.push("/")
@@ -161,6 +162,10 @@ const CreateDiary = () => {
         }).catch((error) => {
             msgBox("error", appmsg.errormsg)
         })
+    }
+    const getsay=()=>{
+        console.log("sayıyor")
+        return diarimages.length
     }
     const formValidate = () => {
         if (diarTitleValidator(diartitle) === false) {
@@ -229,7 +234,7 @@ const CreateDiary = () => {
 
                                     </p>
 
-                                    {renderPreview()}
+                                    {renderPreview}
                                     <p className="text text-center mt-3 pb-2">{
                                         diarimages.length > 1 ? appmsg.creatediary.totalimg + " " + diarimages.length : ''
                                     }</p>
@@ -274,6 +279,7 @@ const CreateDiary = () => {
                             </Card>
                         </div>
                     </div>
+
                     <Button type={"button"} buttontxt={appmsg.creatediary.savediar}
                             onClick={() => {
                                 formValidate()

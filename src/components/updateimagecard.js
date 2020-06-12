@@ -1,6 +1,7 @@
 import React from "react";
 
 const UpdateImageCard = (props) => {
+    console.log("resim kart çalıştı")
     return (
         <React.Fragment>
             <div className="card-body tex-center d-flex align-items-center flex-column">
@@ -46,4 +47,4 @@ const UpdateImageCard = (props) => {
         </React.Fragment>
     )
 }
-export default UpdateImageCard
+export default React.memo(UpdateImageCard)

@@ -3,7 +3,7 @@ import NavBar from "../components/navbar";
 import SideBarAccount from "../components/sidebaraccount";
 import SideBar from "../components/sidebar";
 
-export default ({children}) => {
+const MailnLayout= ({children}) => {
 
 
     return (
@@ -37,3 +37,4 @@ export default ({children}) => {
     )
 }
 
+export  default  React.memo(MailnLayout)

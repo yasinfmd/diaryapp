@@ -14,7 +14,7 @@ import PageTitleBox from "../components/pagetitlebox";
 import Button from "../components/Button";
 
 const Dashboard = (props) => {
-    //userid ekle
+    console.log("dashboard çalıştı")
     const { user} = useContext(GlobalContext)
     const {fetchdiary, state,  deleteDiar} = useContext(DiaryContext)
     useEffect(() => {

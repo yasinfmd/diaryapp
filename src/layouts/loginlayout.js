@@ -4,7 +4,7 @@ import {Link} from "react-router-dom";
 import appmsg from "../utils/appmsg";
 
 
-export default (props) => {
+const LoginLayout= (props) => {
     return (
         <React.Fragment>
             <div className="authentication-bg pb-0">
@@ -54,3 +54,4 @@ export default (props) => {
     )
 }
 
+export default React.memo(LoginLayout)

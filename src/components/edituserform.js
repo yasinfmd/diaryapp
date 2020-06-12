@@ -109,4 +109,4 @@ const EditUserForm = (props) => {
         </React.Fragment>
     )
 }
-export default EditUserForm
+export default React.memo(EditUserForm)

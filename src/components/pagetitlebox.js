@@ -8,6 +8,7 @@ import {msgBox} from "../utils/appmsgbox";
 import appmsg from "../utils/appmsg";
 
 const PageTitleBox = (props) => {
+    console.log("tğtoeb9x")
     const date = new Date();
     const firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
     const lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
@@ -61,4 +62,4 @@ const PageTitleBox = (props) => {
     )
 }
 
-export default PageTitleBox
+export default React.memo(PageTitleBox)

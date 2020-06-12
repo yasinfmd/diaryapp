@@ -21,4 +21,4 @@ Button.PropTypes = {
     buttontxt: PropTypes.string,
     type: PropTypes.string
 }*/
-export default Button
+export default React.memo(Button)

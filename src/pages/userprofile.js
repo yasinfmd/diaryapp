@@ -1,4 +1,4 @@
-import React, {useContext, useRef, useEffect, useState} from "react";
+import React, {useContext, useRef, useEffect, useState, useMemo} from "react";
 import PageSubHeader from "../components/pagesubheader";
 import GlobalContext from "../context/globalContext";
 import ProfileCard from "../components/profile";
@@ -64,7 +64,8 @@ export default function UserProfile() {
 
         }
     }
-    const renderUserProfile = () => {
+    const renderUserProfile=useMemo(()=>{
+        console.log("renderuserprofile 2 çalıştı")
         let renderitem;
         if (userstate.loading == true || userstate.user == null) {
             renderitem = <Loading/>
@@ -84,11 +85,12 @@ export default function UserProfile() {
                                       email={userstate.user.email}/>
         }
         return renderitem
-    }
+    },[userstate.loading,userstate.user, editedImageMode,editedMode])
+
     return (
         <React.Fragment>
             <PageSubHeader pagename={"Profilim"}/>
-            {renderUserProfile()}
+            {renderUserProfile}
             {editedImageMode === true ? (<Flex column={"col-lg-12"}>
                 <Card>
                     <UpdateImageCard base64={base64} inputref={fileInput}

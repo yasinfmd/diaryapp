@@ -1,9 +1,10 @@
 import {Route} from "react-router-dom";
-import React, {useEffect} from "react";
+import React from "react";
 
 import ProtectedRoute from "./protectedroute";
 
 const AppRoute = ({component: Component, layout: Layout, ...rest}) => {
+
     return (
         <Route {...rest} exact render={props => {
             return (
