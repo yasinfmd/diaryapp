@@ -26,8 +26,8 @@ const CreateDiary = () => {
     const [diartitle, setDiarTitle] = useState("")
     const {user} = useContext(GlobalContext)
     const {creatediary, fetchdiary, state, dispatch, addImages, addVideo} = useContext(DiaryContext)
-    const [diarimages, setdiarimages] = useState([])
     const [diarvideo, setdiarvideo] = useState(null);
+    const [diarimages, setdiarimages] = useState([])
     const [uploadedImages, setUploadedImages] = useState([])
     const onChangeEditor = (e) => {
         setDiarText(e)
@@ -71,8 +71,6 @@ const CreateDiary = () => {
         setdiarimages([])
         setdiarimages(images)
     }
-
-
     const renderPreview=useMemo(()=>{
         return diarimages.map((image, index) => {
             return (
@@ -94,8 +92,6 @@ const CreateDiary = () => {
             )
         })
     },[diarimages.length])
-
-
     const resetForm = () => {
         setDiarTitle("")
         setDiarText("")
@@ -142,8 +138,6 @@ const CreateDiary = () => {
 
             } else if (response.status === 204) {
                 fetchTodayDiar()
-                //show de detaya gönder ?
-                //listeye yada detaya yönlendir
                 msgBox("info", appmsg.creatediary.havediar)
             }
         })

@@ -14,11 +14,11 @@ import Button from "../components/Button";
 
 export default function DiarDetail() {
     let history = useHistory();
+    let {diarId} = useParams();
     const [playing, setPlaying] = useState(false)
     const [playingVideo, setPlayingVideo] = useState(null)
     const {user} = useContext(GlobalContext)
     const {show, state} = useContext(DiaryContext)
-    let {diarId} = useParams();
     useEffect(() => {
         if (diarId)
             return showDiar(diarId)
@@ -31,7 +31,7 @@ export default function DiarDetail() {
         })
     }
     const renderDiar = useMemo(() => {
-        console.log("render diar çalıştı")
+        debugger
         if (!state.error && state.loading === false && state.showdiar && state.showdiar._id !== undefined) {
             return (
                 <Card title={moment(state.showdiar.dairdate).format("LLLL")}>
@@ -44,12 +44,7 @@ export default function DiarDetail() {
             )
         }
     }, [state.error, state.loading, state.showdiar])
-/*    const renderDiar = () => {
-        console.log("render diar çalıştı")
-
-    }*/
     const renderSliderItem = useMemo(() => {
-        console.log("renderslideritem çalıştı")
         if (!state.error && state.loading === false && state.showdiar._id != undefined) {
             if (state.showdiar.images && state.showdiar.images.length > 0) {
                 return state.showdiar.images.map((image, index) => {
@@ -64,10 +59,7 @@ export default function DiarDetail() {
             }
         }
     }, [state.error, state.loading, state.showdiar])
-    /*   const renderSliderItem = () => {
-           console.log("renderslideritem çalıştı")
 
-       }*/
     return (
 
         <React.Fragment>
@@ -112,6 +104,10 @@ export default function DiarDetail() {
                 </Flex>
             </Card>) : null}
             {renderDiar}
+
+            <Button buttonclases={"btn-outline-warning btn-block btn-rounded"} icon={"fa fa-edit"} onClick={()=>{
+                history.push("/edit-diar/"+state.showdiar._id)
+            }} buttontxt={"Günlüğü Düzenle"}/>
         </React.Fragment>
 
     )

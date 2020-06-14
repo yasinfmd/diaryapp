@@ -3,15 +3,16 @@ export default function diaryReducers(state, action) {
         case "SET":
             return {
                 error: action.error,
-                showdiar: state.showdiar,
+                showdiar: state.showdiar || {},
                 loading: action.loading,
                 diary: action.payload,
                 groupeduserdiary: state.groupeduserdiary.reverse()
             }
+
         case "SETGROUPEDDIARY":
             return {
                 error: action.error,
-                showdiar: state.showdiar,
+                showdiar: state.showdiar || {},
                 diary: state.diary,
                 groupeduserdiary: action.payload,
                 loading: action.loading
@@ -19,7 +20,7 @@ export default function diaryReducers(state, action) {
         case "CREATE":
             return {
                 error: action.error,
-                showdiar: state.showdiar,
+                showdiar: state.showdiar || {},
                 loading: action.loading,
                 diary: action.payload,
                 groupeduserdiary: state.groupeduserdiary.reverse()
@@ -35,7 +36,7 @@ export default function diaryReducers(state, action) {
 
         case "DELETE":
             return {
-                showdiar: state.showdiar,
+                showdiar: state.showdiar || {},
                 error: action.error,
                 loading: action.loading,
                 diary: action.payload,

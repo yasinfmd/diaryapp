@@ -18,6 +18,32 @@ const DiaryStore = ({children}) => {
         showdiar: {}
     }
     const [diaryState, diaryDispatch] = useReducer(diaryReducers, initialState)
+
+    const deleteDiarImage = (data) => {
+        let deferred = new Promise(((resolve, reject) => {
+            axios.post("http://127.0.0.1:3000/api/image/delete", data,header()).then((res) => {
+                resolve(res)
+            }).catch((err) => {
+                debugger
+                diaryDispatch({type: "SHOW", loading: false, payload: diaryState.showdiar})
+                handleError(err)
+                reject(err)
+            })
+        }))
+        return deferred
+    }
+    const deleteDiarVideo = (data) => {
+        let deferred = new Promise(((resolve, reject) => {
+            axios.post("http://127.0.0.1:3000/api/image/delete", data,header()).then((res) => {
+                resolve(res)
+            }).catch((err) => {
+                diaryDispatch({type: "SHOW", loading: false, payload: diaryState.showdiar})
+                handleError(err)
+                reject(err)
+            })
+        }))
+        return deferred
+    }
     const fetchUserGroupedDiary = (data) => {
         let deferred = new Promise(((resolve, reject) => {
             diaryDispatch({type: "SETGROUPEDDIARY", loading: true})
@@ -88,7 +114,7 @@ const DiaryStore = ({children}) => {
         }))
         return deferred
     }
-    const addVideo=(formData)=>{
+    const addVideo = (formData) => {
         let deferred = new Promise(((resolve, reject) => {
             axios.post("http://127.0.0.1:3000/api/video/create", formData, header('multipart/form-data')).then((response) => {
                 resolve(response)
@@ -155,13 +181,15 @@ const DiaryStore = ({children}) => {
         <DiaryContext.Provider value={{
             state: diaryState,
             dispatch: diaryDispatch,
+            deleteDiarImage: deleteDiarImage,
             creatediary: create,
             addImages: addImages,
-            addVideo:addVideo,
+            addVideo: addVideo,
             fetchdiary: fetch,
             fetchUserGroupedDiary: fetchUserGroupedDiary,
             deleteDiar: deleteDiar,
-            show: show
+            show: show,
+            deleteDiarVideo:deleteDiarVideo
         }}>
             {children}
         </DiaryContext.Provider>
