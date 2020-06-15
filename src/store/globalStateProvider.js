@@ -33,7 +33,6 @@ const GlobalStore = ({children}) => {
             let time = new Date().getTime()
             if (time > +expiration) {
                 logout()
-                console.log("süre geçti")
                 msgBox("info", appmsg.globalstate.sessionend)
             } else {
                 const second = +expiration - time

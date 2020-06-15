@@ -19,12 +19,24 @@ const DiaryStore = ({children}) => {
     }
     const [diaryState, diaryDispatch] = useReducer(diaryReducers, initialState)
 
-    const deleteDiarImage = (data) => {
+    const updateDiary=(data)=>{
         let deferred = new Promise(((resolve, reject) => {
-            axios.post("http://127.0.0.1:3000/api/image/delete", data,header()).then((res) => {
+            
+            axios.post("http://127.0.0.1:3000/api/dair/update", data, header()).then((res) => {
                 resolve(res)
             }).catch((err) => {
-                debugger
+                handleError(err)
+                reject(err)
+            })
+        }))
+        return deferred
+    }
+    const deleteDiarImage = (data) => {
+        let deferred = new Promise(((resolve, reject) => {
+            axios.post("http://127.0.0.1:3000/api/image/delete", data, header()).then((res) => {
+                resolve(res)
+            }).catch((err) => {
+                
                 diaryDispatch({type: "SHOW", loading: false, payload: diaryState.showdiar})
                 handleError(err)
                 reject(err)
@@ -34,7 +46,7 @@ const DiaryStore = ({children}) => {
     }
     const deleteDiarVideo = (data) => {
         let deferred = new Promise(((resolve, reject) => {
-            axios.post("http://127.0.0.1:3000/api/image/delete", data,header()).then((res) => {
+            axios.post("http://127.0.0.1:3000/api/video/delete", data, header()).then((res) => {
                 resolve(res)
             }).catch((err) => {
                 diaryDispatch({type: "SHOW", loading: false, payload: diaryState.showdiar})
@@ -68,8 +80,7 @@ const DiaryStore = ({children}) => {
         let deferred = new Promise(((resolve, reject) => {
             diaryDispatch({type: "SET", loading: true})
             axios.post("http://127.0.0.1:3000/api/user/" + data.userid + "/dair", data, header()).then((res) => {
-                debugger
-                console.log("gelen", res)
+                
                 if (res.status === 200) {
                     diaryDispatch({type: "SET", loading: false, payload: res.data.diaries.reverse()})
                 }
@@ -83,7 +94,7 @@ const DiaryStore = ({children}) => {
         return deferred
     }
     const deleteDiar = (data) => {
-        debugger
+        
         let deferred = new Promise(((resolve, reject) => {
             diaryDispatch({type: "DELETE", loading: true, payload: []})
             axios.post("http://127.0.0.1:3000/api/dair/delete", data, header()).then((response) => {
@@ -161,7 +172,7 @@ const DiaryStore = ({children}) => {
     const create = (data) => {
         let deferred = new Promise(((resolve, reject) => {
             axios.post("http://127.0.0.1:3000/api/dair/create", data, header()).then((res) => {
-                debugger
+                
                 if (res.status === 200) {
                     diaryDispatch({type: "CREATE", loading: false, payload: [...diaryState.diary, res.data]})
                 } else if (res.status === 204) {
@@ -189,7 +200,8 @@ const DiaryStore = ({children}) => {
             fetchUserGroupedDiary: fetchUserGroupedDiary,
             deleteDiar: deleteDiar,
             show: show,
-            deleteDiarVideo:deleteDiarVideo
+            deleteDiarVideo: deleteDiarVideo,
+            updateDiary:updateDiary
         }}>
             {children}
         </DiaryContext.Provider>

@@ -12,10 +12,11 @@ import InputForm from "../components/formInput";
 import MyEditor from "../components/editor";
 import Button from "../components/Button";
 import Loading from "../components/loading";
-import {ImageValidator} from "../utils/appimagevalidator";
+import {ImageValidator, VideoValidator} from "../utils/appimagevalidator";
 import {readFileBase64} from "../utils/appimageconverter";
 import {msgBox} from "../utils/appmsgbox";
 import ReactPlayer from "react-player";
+import {diarContentValidator, diarTitleValidator} from "../utils/appvalidator";
 
 export default function EditDiar() {
     let creatediarfileInput = useRef()
@@ -28,7 +29,7 @@ export default function EditDiar() {
     let history = useHistory();
     let {diarId} = useParams();
     const {user} = useContext(GlobalContext)
-    const {show, state, dispatch, deleteDiarImage,deleteDiarVideo} = useContext(DiaryContext)
+    const {show, state, dispatch, deleteDiarImage, deleteDiarVideo, updateDiary, addImages, addVideo} = useContext(DiaryContext)
     const [diarItem, setDiarItem] = useState(state.showdiar)
     useEffect(() => {
         if (diarId)
@@ -37,6 +38,20 @@ export default function EditDiar() {
     const removeDiarVideo = () => {
         setPlaying(false)
         setPlayingVideo(null)
+        const where = urlParse.parse("_id=" + state.showdiar.videos[0]._id);
+        let filename = state.showdiar.videos[0].videoUri.split("/")
+        filename = filename[filename.length - 1]
+        let data = {
+            filename: filename,
+            dairid: state.showdiar._id,
+            videoid: state.showdiar.videos[0]._id,
+            urlparse: where
+        }
+        dispatch({type: "SHOW", loading: true, payload: diarItem})
+        deleteDiarVideo(data).then((response) => {
+            dispatch({type: "SHOW", loading: false, payload: Object.assign(diarItem, {videos: []})})
+            msgBox("success", "Video Başarıyla Silindi")
+        })
     }
     const removePreviewImage = (index) => {
         const images = JSON.parse(JSON.stringify(diarimages));
@@ -83,7 +98,6 @@ export default function EditDiar() {
             msgBox("success", "Resim Başarıyla Silindi")
         })
 
-        debugger
     }
     const renderPreview = useMemo(() => {
         if (diarItem && diarItem.images && diarItem.images.length > 0) {
@@ -133,6 +147,65 @@ export default function EditDiar() {
                 })
             }
         })
+    }
+    const changeVideo = () => {
+        creatediarvideoInput.current.files.forEach((file) => {
+            if (VideoValidator(file) === false) {
+                msgBox("error", appmsg.creatediary.onlyvideo)
+            } else {
+                setdiarvideo(file)
+            }
+
+        })
+    }
+    const uploadVideo = (dairId) => {
+        let formData = new FormData();
+        formData.append("file", diarvideo)
+        formData.append("dairid", dairId)
+        addVideo(formData).then((res) => {
+            msgBox("success", appmsg.creatediary.creatediar)
+            history.push("/diar-detail/" + diarItem._id)
+
+        })
+    }
+    const updateDiar = () => {
+        let diar = {
+            userid: user._id,
+            title: diarItem.title,
+            content: diarItem.content,
+            urlparse: urlParse.parse("_id=" + state.showdiar._id)
+        }
+        updateDiary(diar).then((response) => {
+            if (uploadedImages.length > 0) {
+                return uploadMultipleImages(diarItem._id)
+            } else {
+                if (diarvideo) return uploadVideo(diarItem._id)
+                msgBox("success", appmsg.creatediary.creatediar)
+                history.push("/diar-detail/" + diarItem._id)
+            }
+        })
+    }
+    const uploadMultipleImages = (dairId) => {
+        let formData = new FormData();
+        for (let i = 0; i < uploadedImages.length; i++) {
+            var file = uploadedImages[i]
+            formData.append('files', file);
+        }
+        formData.append("diarId", dairId)
+        addImages(formData).then((response) => {
+            if (diarvideo) return uploadVideo(dairId)
+            msgBox("success", appmsg.creatediary.creatediar)
+            history.push("/diar-detail/" + diarItem._id)
+        })
+    }
+    const formValidate = () => {
+        if (diarTitleValidator(diarItem.title) === false) {
+            msgBox("error", appmsg.creatediary.enterdiartitle)
+        } else if (diarContentValidator(diarItem.content) === false) {
+            msgBox("error", appmsg.creatediary.enterdiarcontent)
+        } else {
+            updateDiar();
+        }
     }
     const showDiar = (id) => {
         show({populate: "images videos", userid: user._id, dairid: id}).then((response) => {
@@ -200,55 +273,55 @@ export default function EditDiar() {
                                 </div>
                                 <div className="form-group">
                                     <p className="text text-center font-20 font-weight-bold mt-3 pb-2">
-                                        {(diarItem && diarItem.images && diarItem.images.length > 1) ? appmsg.creatediary.preview : ''}
+                                        {(diarimages.length > 1) ? appmsg.creatediary.preview : ''}
 
                                     </p>
 
                                     {rendernewimagePreview}
                                     <p className="text text-center mt-3 pb-2">{
-                                        (diarItem && diarItem.images && diarItem.images.length > 1) ? appmsg.creatediary.totalimg + " " + diarItem.images.length : ''
+                                        (diarimages.length > 1) ? appmsg.creatediary.totalimg + " " + diarimages.length : ''
                                     }</p>
                                 </div>
                             </Card>
 
                         </div>
 
-
-                        {/*  <div className="col-lg-6">
-                            <Card>
-                                <p className="text text-center">{appmsg.creatediary.videoupload}</p>
-                                <div className="form-group mb-3">
-                                    <a
-                                        onClick={() => {
-                                            creatediarvideoInput.current.click();
-                                        }}
-                                        aria-pressed="true"
-                                        className="btn btn-block btn-rounded btn-success text-white"
-                                        role="button"
-                                    > {appmsg.creatediary.pickvideo}</a>
-                                    {diarvideo ?
-                                        <p className={"text text-center pt-3"}> Seçilen Video : {diarvideo.name}
-
-                                            <Button type={"button"} buttontxt={"Videoyu Sil"} onClick={() => {
-                                                setdiarvideo(null)
+                        {diarItem && diarItem.videos && diarItem.videos.length < 1 ?
+                            <div className="col-lg-6">
+                                <Card>
+                                    <p className="text text-center">{appmsg.creatediary.videoupload}</p>
+                                    <div className="form-group mb-3">
+                                        <a
+                                            onClick={() => {
+                                                creatediarvideoInput.current.click();
                                             }}
-                                                    buttonclases={"btn-sm btn-xs btn-outline-danger"}
-                                                    icon={'pr-2 fa fa-trash'}/>
-                                        </p> : null
-                                    }
-                                    <input className={"form-control"} hidden type={"file"}
-                                           ref={creatediarvideoInput}
-                                           name="myImage"
-                                           onChange={() => {
-                                               changeVideo()
-                                           }}
-                                           accept="video/*"
-                                           style={{display: "none"}}
-                                    />
-                                </div>
+                                            aria-pressed="true"
+                                            className="btn btn-block btn-rounded btn-success text-white"
+                                            role="button"
+                                        > {appmsg.creatediary.pickvideo}</a>
+                                        {diarvideo ?
+                                            <p className={"text text-center pt-3"}> Seçilen Video : {diarvideo.name}
 
-                            </Card>
-                        </div>*/}
+                                                <Button type={"button"} buttontxt={"Videoyu Sil"} onClick={() => {
+                                                    setdiarvideo(null)
+                                                }}
+                                                        buttonclases={"btn-sm btn-xs btn-outline-danger"}
+                                                        icon={'pr-2 fa fa-trash'}/>
+                                            </p> : null
+                                        }
+                                        <input className={"form-control"} hidden type={"file"}
+                                               ref={creatediarvideoInput}
+                                               name="myImage"
+                                               onChange={() => {
+                                                   changeVideo()
+                                               }}
+                                               accept="video/*"
+                                               style={{display: "none"}}
+                                        />
+                                    </div>
+
+                                </Card>
+                            </div> : null}
                     </div>
                 </Flex>
                 <Flex column={"col-12"}>
@@ -311,6 +384,12 @@ export default function EditDiar() {
                         </Flex>
                     </Card>
                     : null}
+                <Button type={"button"} buttontxt={appmsg.creatediary.savediar}
+                        onClick={() => {
+                            formValidate()
+                        }}
+                        buttonclases={"btn btn-block btn-outline-success btn-rounded"}
+                        icon={"pr-2 fa fa-save"}/>
             </Card>
         </React.Fragment>
     )

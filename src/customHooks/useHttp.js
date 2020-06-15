@@ -8,7 +8,6 @@ const useHttp = (url, options, method, data) => {
     React.useEffect(() => {
         const fetchData = async () => {
             setIsLoading(true);
-            debugger
             try {
                 switch (method) {
                     case "GET":

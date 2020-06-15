@@ -23,7 +23,6 @@ export default function UserDiar() {
     const {fetchUserGroupedDiary, fetchdiary, state,deleteDiar, dispatch} = useContext(DiaryContext)
     useEffect(() => {
         fetchUserGroupedDiary({userId: user._id}).then((response) => {
-            console.log("result", response)
         }).catch((error) => {
             msgBox("error", appmsg.errormsg)
         })
@@ -42,25 +41,24 @@ export default function UserDiar() {
             fields: "fullname",
             dairfields: "title content dairdate dairdateString -videos -images "
         }).then((response) => {
-            console.log("cevappp", response)
         }).catch((error) => {
             msgBox("error", appmsg.errormsg)
         })
     }
     const deleteDiarItem=(diaryItem,index,groupedindex)=>{
-        debugger
+        
         const where = urlParse.parse("_id=" + diaryItem._id)
         deleteDiar({urlparse: where, index, id: diaryItem._id,groupedindex}).then((response) => {
-            debugger
+            
             msgBox("success", "Günlük Başarıyla Silindi")
         }).catch((error) => {
-            debugger
+            
             msgBox("error", appmsg.errormsg)
         })
     }
     const renderDiaryItem = (month,year,groupedindex) => {
         if (state.loading == false && state.diary.length > 0) {
-            debugger
+            
             return state.diary.map((diaryItem, index) => {
                 return (
                     <div className="col-12" key={index}>
@@ -113,7 +111,7 @@ export default function UserDiar() {
 
     }
     const renderAccordionItem = () => {
-        debugger
+        
         if (state.loading === false && state.groupeduserdiary.length > 0) {
             return state.groupeduserdiary.map((diaryItem, index) => {
                 return (
@@ -134,9 +132,7 @@ export default function UserDiar() {
     return (
         <React.Fragment>
                 
-            {/*    <Route path={`${path}/:topicId`}>
-                    <Topic />
-                </Route>*/}
+
             <PageSubHeader pagename={"Günlüklerim"}/>
 
             <Card>

@@ -65,7 +65,6 @@ export default function UserProfile() {
         }
     }
     const renderUserProfile=useMemo(()=>{
-        console.log("renderuserprofile 2 çalıştı")
         let renderitem;
         if (userstate.loading == true || userstate.user == null) {
             renderitem = <Loading/>

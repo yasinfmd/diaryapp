@@ -8,7 +8,6 @@ import {msgBox} from "../utils/appmsgbox";
 import appmsg from "../utils/appmsg";
 
 const PageTitleBox = (props) => {
-    console.log("tğtoeb9x")
     const date = new Date();
     const firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
     const lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
@@ -25,20 +24,16 @@ const PageTitleBox = (props) => {
     }
 
     const fetchFilterDiary = () => {
-        debugger
         const firstDay = startDate
         const lastDay = endData
         const where = urlParse.parse("dairdate>" + firstDay + "&dairdate<" + lastDay)
-        debugger
         fetchdiary({
             urlparse: where,
             userid: user._id,
             fields: "fullname",
             dairfields: "title content dairdate dairdateString -videos -images "
         }).then((response) => {
-            debugger
         }).catch((error) => {
-            debugger
             msgBox("error", appmsg.errormsg)
         })
     }

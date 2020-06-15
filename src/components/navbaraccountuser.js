@@ -18,4 +18,4 @@ const NavBarAccountUser = () => {
         </a>
     )
 }
-export default NavBarAccountUser
+export default React.memo(NavBarAccountUser)

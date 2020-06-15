@@ -1,7 +1,6 @@
 import React from "react";
 
 const SliderItem = (props) => {
-    console.log("aaa",'carousel-item' + ' ' + (props.active === true ? 'active' : ''))
     return (
         <div className={'carousel-item' + ' ' + (props.active === true ? 'active' : '')}>
             <img src={props.image} alt="..."

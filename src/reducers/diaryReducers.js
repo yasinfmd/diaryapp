@@ -9,6 +9,14 @@ export default function diaryReducers(state, action) {
                 groupeduserdiary: state.groupeduserdiary.reverse()
             }
 
+        case "UPDATE":
+            return {
+                error: action.error,
+                loading: action.loading,
+                showdiar: action.payload,
+                diary: state.diary,
+                groupeduserdiary: state.groupeduserdiary.reverse()
+            }
         case "SETGROUPEDDIARY":
             return {
                 error: action.error,

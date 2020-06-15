@@ -157,10 +157,7 @@ const CreateDiary = () => {
             msgBox("error", appmsg.errormsg)
         })
     }
-    const getsay=()=>{
-        console.log("sayıyor")
-        return diarimages.length
-    }
+
     const formValidate = () => {
         if (diarTitleValidator(diartitle) === false) {
             msgBox("error", appmsg.creatediary.enterdiartitle)

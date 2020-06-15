@@ -31,7 +31,6 @@ export default function DiarDetail() {
         })
     }
     const renderDiar = useMemo(() => {
-        debugger
         if (!state.error && state.loading === false && state.showdiar && state.showdiar._id !== undefined) {
             return (
                 <Card title={moment(state.showdiar.dairdate).format("LLLL")}>

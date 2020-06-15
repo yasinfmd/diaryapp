@@ -24,13 +24,6 @@ const NavBarAccountMenu = () => {
                 <span>{menuItem.text}</span>
 
             </Link>
-           /* <a href="#" onClick={(e) => {
-                e.preventDefault()
-
-            }} key={index} className="dropdown-item notify-item">
-                <i className={menuItem.icon + " " + "mr-1"}></i>
-                <span>{menuItem.text}</span>
-            </a>*/
         )
     }
     return (
@@ -44,4 +37,4 @@ const NavBarAccountMenu = () => {
         </div>
     )
 }
-export default NavBarAccountMenu
+export default React.memo(NavBarAccountMenu)

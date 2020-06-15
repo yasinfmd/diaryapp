@@ -4,7 +4,6 @@ import {Link} from "react-router-dom";
 
 const SideBarAccount = () => {
     const {user} = useContext(GlobalContext)
-    console.log("bendeki user", user)
     return (
         <div className="leftbar-user">
             <Link to={"/"}>
@@ -18,4 +17,4 @@ const SideBarAccount = () => {
         </div>
     )
 }
-export default SideBarAccount
+export default React.memo(SideBarAccount)

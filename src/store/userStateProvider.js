@@ -20,10 +20,7 @@ const UserStore = ({children}) => {
         return new Promise(((resolve, reject) => {
             userDispatch({type: "SHOW", loading: true})
             axios.post("http://127.0.0.1:3000/api/user/" + data.id, data, header()).then((res) => {
-                debugger
-
                 userDispatch({type: "SHOW", loading: false, user: res.data})
-
                 resolve(res)
             }).catch((err) => {
                 handleError(err)

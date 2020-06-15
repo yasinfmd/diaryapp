@@ -2,7 +2,6 @@ import React from "react";
 import Flex from "./flex";
 
 const PageSubHeader = (props) => {
-    console.log("pagesubhead")
     return (
         <Flex column={"col-12"}>
             <div className="page-title-box">

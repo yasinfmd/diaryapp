@@ -12,4 +12,4 @@ const NavBarAccount = () => {
 
         </ul>)
 }
-export default NavBarAccount
+export default React.memo(NavBarAccount)
