@@ -7,6 +7,7 @@ const InputForm = props => {
         <div className={"form-group" + " " + props.forminputclass}>
             {props.toplabel === true ? <label>{props.toplabeltext}</label> : null}
             <input type={props.type}
+                   name={props.name}
                    autoFocus={props.autoFocus}
                    className={"form-control" + " " + props.forminputclass}
                    placeholder={props.placeholder} value={props.value} onChange={props.onChange}/>

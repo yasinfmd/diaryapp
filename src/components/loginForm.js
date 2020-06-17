@@ -30,7 +30,9 @@ const LoginForm = () => {
                    localStorage.setItem("user", JSON.stringify(response.data.user))
                    updateAuth(true)
                    updateUser(response.data.user)
-                   history.push('/')
+                   console.log("role",response.data.user)
+                   if(response.data.user.role===0)return history.push("/")
+                       return history.push('/admin-dashboard')
                } else if (response.status === 204) {
                    msgBox("warning", appmsg.loginform.usernameorpassworderror)
                }
@@ -57,6 +59,7 @@ const LoginForm = () => {
             <InputForm placeholder={appmsg.loginform.emailplaceholder}
                        type={"email"}
                        sublabel={true}
+                       name={"email"}
                        sublabelclass={emailValidate === true ? "valid-feedback" : 'invalid-feedback'}
                        sublabeltext={emailValidate === true ? '' : appmsg.loginform.emailerror}
                        {...bindemail}
@@ -67,6 +70,7 @@ const LoginForm = () => {
             <InputForm placeholder={appmsg.loginform.passwordplaceholder}
                        type={"password"}
                        sublabel={true}
+                       name={"password"}
                        sublabelclass={passwordValidate === true ? "valid-feedback" : 'invalid-feedback'}
                        sublabeltext={passwordValidate === true ? '' : appmsg.loginform.passworderror}
                        {...bindpassword}

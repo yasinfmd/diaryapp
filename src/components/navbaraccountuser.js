@@ -13,7 +13,7 @@ const NavBarAccountUser = () => {
                             </span>
             <span>
                         <span className="account-user-name">{user ? user.fullname.toUpperCase() : ''}</span>
-                        <span className="account-position">Günlük Kullanıcısı</span>
+                        <span className="account-position">{user?user.role==0?"Günlük Kullanıcısı":'Günlük Yöneticisi':null}</span>
                         </span>
         </a>
     )

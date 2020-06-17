@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import axios from "axios"
 
-const useHttp = (url, options, method, data) => {
+const useHttp = (url, options, data) => {
     const [response, setResponse] = React.useState(null);
     const [error, setError] = React.useState(null);
     const [isLoading, setIsLoading] = React.useState(false);
@@ -9,13 +9,10 @@ const useHttp = (url, options, method, data) => {
         const fetchData = async () => {
             setIsLoading(true);
             try {
-                switch (method) {
-                    case "GET":
-                        const res = await axios.get(url, options)
+                        const res = await axios.post(url,data, options)
                         setResponse(res);
                         setIsLoading(false)
                         return
-                }
             } catch (error) {
                 setIsLoading(false)
                 setError(error);
@@ -23,6 +20,6 @@ const useHttp = (url, options, method, data) => {
         };
         fetchData();
     }, []);
-    return {response, error, isLoading};
+    return {response, error, isLoading,setResponse};
 };
 export default useHttp

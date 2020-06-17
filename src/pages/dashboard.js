@@ -12,7 +12,6 @@ import {urlParse} from "../utils/appparser";
 import PageSubHeader from "../components/pagesubheader";
 import PageTitleBox from "../components/pagetitlebox";
 import Button from "../components/Button";
-import openSocket from "socket.io-client"
 
 const Dashboard = (props) => {
     const {user} = useContext(GlobalContext)
@@ -30,10 +29,7 @@ const Dashboard = (props) => {
         }).catch((error) => {
             msgBox("error", appmsg.errormsg)
         })
-        const socket = openSocket("http://localhost:3000/");
-        socket.on("diars",data=>{
-            console.log("gel",data)
-        })
+
     }, [])
 
     const deleteDiarItem = (diaryItem, index) => {

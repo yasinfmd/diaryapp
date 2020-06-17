@@ -26,6 +26,15 @@ export const menu = [
 
 ]
 
+export const adminmenu=[
+    {
+        id:1,
+        text:"Günlükler",
+        to:"/admin-dashboard",
+        icon: "fa fa-book text-primary"
+    }
+]
+
 export const sidemenu = [
         {
             id: 1,

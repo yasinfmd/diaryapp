@@ -6,7 +6,7 @@ import * as serviceWorker from './serviceWorker';
 import GlobalStore from "./store/globalStateProvider";
 /*import axios from 'axios';
 
-axios.defaults.baseURL = 'https://jsonplaceholder.typicode.com';*/
+axios.defaults.baseURL = 'http://localhost:3000/';*/
 ReactDOM.render(
     <React.StrictMode>
         <BrowserRouter>
