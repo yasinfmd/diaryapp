@@ -12,10 +12,11 @@ import {urlParse} from "../utils/appparser";
 import PageSubHeader from "../components/pagesubheader";
 import PageTitleBox from "../components/pagetitlebox";
 import Button from "../components/Button";
+import openSocket from "socket.io-client"
 
 const Dashboard = (props) => {
-    const { user} = useContext(GlobalContext)
-    const {fetchdiary, state,  deleteDiar} = useContext(DiaryContext)
+    const {user} = useContext(GlobalContext)
+    const {fetchdiary, state, deleteDiar} = useContext(DiaryContext)
     useEffect(() => {
         const firstDay = moment().startOf('month').format('YYYY-MM-DD');
         const lastDay = moment().endOf('month').format('YYYY-MM-DD HH:mm');
@@ -28,6 +29,10 @@ const Dashboard = (props) => {
         }).then((response) => {
         }).catch((error) => {
             msgBox("error", appmsg.errormsg)
+        })
+        const socket = openSocket("http://localhost:3000/");
+        socket.on("diars",data=>{
+            console.log("gel",data)
         })
     }, [])
 
